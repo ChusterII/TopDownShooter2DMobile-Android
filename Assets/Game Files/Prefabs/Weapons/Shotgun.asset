@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b647f1bf6b1de4fb32f5926d31837d, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: 
+  name: Shotgun
+  weaponType: 1
+  maxAmmo: 6
+  damage: 1
+  rateOfFire: 0.5
+  reloadTime: 1.25
+  allowsHold: 0
+  spread: 10
+  numberOfBullets: 6
+  firingSound: {fileID: 8300000, guid: 5bb4a3440bc845945a1a903762aee1c1, type: 3}
+  reloadingSound: {fileID: 8300000, guid: 4eed9684b9b73024ab64269c6b7b0e4d, type: 3}
