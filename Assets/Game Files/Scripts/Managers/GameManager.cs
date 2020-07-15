@@ -7,9 +7,15 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 {
     public class GameManager : MonoBehaviour
     {
-
+        [Header("Difficulty Levels")]
         [SerializeField] private MeleeDifficulty meleeDifficulty;
         [SerializeField] private RangedDifficulty rangedDifficulty;
+        
+        [Header("Movement Probabilities")]
+        [SerializeField] private MeleeMovementProbability meleeMovementProbability;
+        [SerializeField] private RangedMovementProbability rangedMovementProbability;
+        
+        [Header("Settings")]
         [SerializeField] private float spawnCooldown = 1f;
         [SerializeField] private float stageMaxTime;
         
@@ -26,6 +32,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private bool _canSpawn = true;
         private MeleeEnemySpawnData[] _meleeSpawnData;
         private RangedEnemySpawnData[] _rangedSpawnData;
+        
 
         public static GameManager instance;
 
@@ -70,7 +77,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             {
                 // Need to wait a bit before spawning because the SpawnManager hasn't loaded
                 yield return Timing.WaitForSeconds(3f);
-                _spawnManager.SpawnEnemies(_meleeSpawnData, _rangedSpawnData);
+                _spawnManager.SpawnEnemies(_meleeSpawnData, _rangedSpawnData, meleeMovementProbability, rangedMovementProbability);
                 yield return Timing.WaitForSeconds(spawnCooldown);
                 if (_stageTimer > stageMaxTime)
                 {

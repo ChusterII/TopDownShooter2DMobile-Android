@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cc5c9aaa886f5842b027a9832dde519, type: 3}
-  m_Name: Melee Difficulty Settings
+  m_Script: {fileID: 11500000, guid: 7def503041a1fb4448e2d009e732d233, type: 3}
+  m_Name: Ranged Movement Probability
   m_EditorClassIdentifier: 
-  meleeDifficultyLevels:
-  - meleeEnemySpawnData:
-    - enemyType: 0
-      spawnChance: 1
-    - enemyType: 1
-      spawnChance: 0
-    - enemyType: 2
-      spawnChance: 0
+  rushChance: 0
+  zigzagChance: 0

@@ -5,6 +5,7 @@ using DG.Tweening;
 using MEC;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using WarKiwiCode.Game_Files.Scripts.Core.Movement;
 using WarKiwiCode.Game_Files.Scripts.Managers;
 using WarKiwiCode.Game_Files.Scripts.Projectiles;
 using Random = UnityEngine.Random;
@@ -12,10 +13,20 @@ using Random = UnityEngine.Random;
 
 namespace WarKiwiCode.Game_Files.Scripts.Core
 {
+    public enum EnemyType
+    {
+        SlowMelee,
+        NormalMelee,
+        FastMelee,
+        PistolRanged,
+        SmgRanged,
+        RpgRanged
+    }
+    
+    [RequireComponent(typeof(EnemyMovement))]
     public abstract class Enemy : MonoBehaviour, IPooledObject, ISpawnable
     {
         [SerializeField] protected Light2D enemyLight;
-        [SerializeField] protected float moveSpeed;
         [SerializeField] protected int maxHealth;
         
         
@@ -25,25 +36,20 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         [SerializeField] private Transform healthBar;
 
 
-        protected enum MovementType
-        {
-            Rush,
-            Flank,
-            Zigzag
-        }
+        
 
         private int _currentHealth;
         protected Rigidbody2D rb;
-        private readonly float _screenMiddle = Screen.height / 2f; 
-        protected Vector3 playerPosition;
-        protected bool spawnedTop;
+        
+        
+        
         private SpriteRenderer _sprite;
         private Collider2D _collider;
-        protected bool canMove = true;
-        protected bool disableMovement;
-        protected MovementType movementType;
+        private EnemyMovement _enemyMovement;
+
         protected SpawnAreaName spawnArea;
         protected SpawnManager _spawnManager;
+        protected Vector3 playerPosition;
         
 
         protected void Start()
@@ -63,18 +69,18 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         {
             _collider = GetComponent<Collider2D>();
             _sprite = GetComponent<SpriteRenderer>();
+            _enemyMovement = GetComponent<EnemyMovement>();
+            
             _spawnManager = SpawnManager.instance;
             _sprite.DOFade(1, 0.01f);
             _collider.enabled = true;
             enemyLight.intensity = 1;
             _currentHealth = maxHealth;
-            disableMovement = false;
             HideHealthBar();
-            GetSpawnArea(GetPosition());
-            FindNearestPlayer();
+            _enemyMovement.InitializeMovement();
+            playerPosition = _enemyMovement.FindNearestPlayer();
         }
-
-        protected abstract void Move();
+        
         protected abstract void AttackPlayer();
 
         private void TakeDamage(int damage)
@@ -93,7 +99,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             BloodParticleSystemHandler.Instance.SpawnBlood(GetPosition(), bloodDirection);
             if (_currentHealth <= 0)
             {
-                disableMovement = true;
+                _enemyMovement.DisableEnemyMovement(true);
                 _currentHealth = 0;
                 HideHealthBar();
                 //Die
@@ -123,16 +129,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         protected Vector3 GetPosition()
         {
             return transform.position;
-        }
-
-        private void GetSpawnArea(Vector3 startingPosition)
-        {
-            spawnedTop = startingPosition.y > _screenMiddle;
-        }
-
-        private void FindNearestPlayer()
-        {
-            playerPosition = spawnedTop ? GameObject.FindWithTag("PlayerTop").transform.position : GameObject.FindWithTag("PlayerBottom").transform.position;
         }
 
         private IEnumerator<float> EnemyDeath()

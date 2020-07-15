@@ -384,8 +384,9 @@ GameObject:
   - component: {fileID: 6177692752827757636}
   - component: {fileID: 6177692752827757643}
   - component: {fileID: 1613469852288556953}
+  - component: {fileID: 3614386567731680148}
   m_Layer: 0
-  m_Name: Enemy (Slow - Melee)
+  m_Name: Enemy (Slow - Flank - Melee)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -507,9 +508,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyLight: {fileID: 6177692751998932042}
-  moveSpeed: 0.8
   maxHealth: 3
   healthBarSprite: {fileID: 6177692752825227305}
   healthBackgroundSprite: {fileID: 6177692751038381065}
   healthBar: {fileID: 6177692751340373238}
-  chanceToFlank: 0.5
+--- !u!114 &3614386567731680148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6177692752827757640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c679cee40c58ed47a66489c5e3ea205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.8
