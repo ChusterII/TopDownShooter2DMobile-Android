@@ -11,9 +11,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Difficulty
     
     public enum MeleeEnemyType
     {
-        SlowMelee = 0,
-        NormalMelee = 1,
-        FastMelee = 2
+        SlowMelee,
+        NormalMelee,
+        FastMelee
     }
     
     [System.Serializable]

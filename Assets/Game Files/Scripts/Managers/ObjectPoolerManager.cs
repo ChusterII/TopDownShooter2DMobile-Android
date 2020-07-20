@@ -133,6 +133,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 
         private static void CheckForISpawnable(GameObject obj, SpawnAreaName areaName)
         {
+            // TODO: Revisar si se necesita eventualmente
             ISpawnable pooledObject = obj.GetComponent<ISpawnable>();
             pooledObject?.SetSpawnArea(areaName);
         }

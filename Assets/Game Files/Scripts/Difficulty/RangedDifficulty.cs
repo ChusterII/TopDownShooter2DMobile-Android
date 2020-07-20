@@ -11,9 +11,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Difficulty
     
     public enum RangedEnemyType
     {
-        PistolRanged = 0,
-        SmgRanged = 1,
-        RpgRanged = 2
+        PistolRanged,
+        SmgRanged ,
+        RpgRanged
     }
     
     [System.Serializable]

@@ -16,9 +16,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
             if (disableMovement) return;
             if (canMove)
             {
-                transform.position = Vector3.MoveTowards(transform.position, playerPosition, step);
+                transform.position = Vector3.MoveTowards(transform.position, finalPosition, step);
             }
-            canMove = !(Vector3.Distance(transform.position, playerPosition) < 0.9f);
+            canMove = !(Vector3.Distance(transform.position, finalPosition) < minDistanceToTargetPosition);
         }
     }
 }

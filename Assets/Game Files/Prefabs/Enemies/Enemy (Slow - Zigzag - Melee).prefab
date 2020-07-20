@@ -383,8 +383,8 @@ GameObject:
   - component: {fileID: 6177692752827757641}
   - component: {fileID: 6177692752827757636}
   - component: {fileID: 6177692752827757643}
-  - component: {fileID: 1613469852288556953}
   - component: {fileID: 3411818350566903260}
+  - component: {fileID: 3970490966823535961}
   m_Layer: 0
   m_Name: Enemy (Slow - Zigzag - Melee)
   m_TagString: Untagged
@@ -495,23 +495,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1613469852288556953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6177692752827757640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20be6bd2e1d55404e817edf36dc97ec0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyLight: {fileID: 6177692751998932042}
-  maxHealth: 3
-  healthBarSprite: {fileID: 6177692752825227305}
-  healthBackgroundSprite: {fileID: 6177692751038381065}
-  healthBar: {fileID: 6177692751340373238}
 --- !u!114 &3411818350566903260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,5 +508,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.8
+  minDistanceToTargetPosition: 0.9
   minimumDistanceToPlayer: 2
   minimumZigZagDistance: 2
+--- !u!114 &3970490966823535961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6177692752827757640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866c20d2a836f3e4eaf2664abb6fd7b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyLight: {fileID: 6177692751998932042}
+  maxHealth: 2
+  healthBarSprite: {fileID: 6177692752825227305}
+  healthBackgroundSprite: {fileID: 6177692751038381065}
+  healthBar: {fileID: 6177692751340373238}

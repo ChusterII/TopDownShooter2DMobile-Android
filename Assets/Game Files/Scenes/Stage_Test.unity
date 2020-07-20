@@ -2682,6 +2682,11 @@ MonoBehaviour:
       type: 3}
     size: 20
     recycle: 0
+  - tag: EnemyNormalRushPistol
+    prefab: {fileID: 6177692752827757640, guid: ad5c4613a4c26aa45892d1602248a727,
+      type: 3}
+    size: 2
+    recycle: 0
   - tag: EnemySlowZigzagMelee
     prefab: {fileID: 6177692752827757640, guid: 34ffdc266e748b1439c5ef508fdeedf4,
       type: 3}

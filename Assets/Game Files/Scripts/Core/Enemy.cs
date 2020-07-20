@@ -5,6 +5,7 @@ using DG.Tweening;
 using MEC;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using WarKiwiCode.Game_Files.Scripts.Core.Attack;
 using WarKiwiCode.Game_Files.Scripts.Core.Movement;
 using WarKiwiCode.Game_Files.Scripts.Managers;
 using WarKiwiCode.Game_Files.Scripts.Projectiles;
@@ -24,10 +25,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
     }
     
     [RequireComponent(typeof(EnemyMovement))]
-    public abstract class Enemy : MonoBehaviour, IPooledObject, ISpawnable
+    public sealed class Enemy : MonoBehaviour, IPooledObject, ISpawnable
     {
-        [SerializeField] protected Light2D enemyLight;
-        [SerializeField] protected int maxHealth;
+        [SerializeField] private Light2D enemyLight;
+        [SerializeField] private int maxHealth;
         
         
         [SerializeField] private SpriteRenderer healthBarSprite;
@@ -39,20 +40,18 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         
 
         private int _currentHealth;
-        protected Rigidbody2D rb;
-        
-        
-        
         private SpriteRenderer _sprite;
         private Collider2D _collider;
         private EnemyMovement _enemyMovement;
+        private EnemyAttack _enemyAttack;
 
-        protected SpawnAreaName spawnArea;
-        protected SpawnManager _spawnManager;
-        protected Vector3 playerPosition;
-        
+        // TODO: Check if we need the ISpawnable interface that sets the spawn area name
+        private SpawnAreaName _spawnArea;
+        private SpawnManager _spawnManager;
+        private Vector3 _playerPosition;
 
-        protected void Start()
+
+        private void Start()
         {
             /*
             _collider = GetComponent<Collider2D>();
@@ -65,12 +64,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             */
         }
 
-        public virtual void OnSpawn()
+        public void OnSpawn()
         {
             _collider = GetComponent<Collider2D>();
             _sprite = GetComponent<SpriteRenderer>();
             _enemyMovement = GetComponent<EnemyMovement>();
-            
             _spawnManager = SpawnManager.instance;
             _sprite.DOFade(1, 0.01f);
             _collider.enabled = true;
@@ -78,10 +76,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             _currentHealth = maxHealth;
             HideHealthBar();
             _enemyMovement.InitializeMovement();
-            playerPosition = _enemyMovement.FindNearestPlayer();
+            _enemyAttack.InitializeAttackPattern();
+            _playerPosition = _enemyMovement.FindNearestPlayer();
         }
-        
-        protected abstract void AttackPlayer();
 
         private void TakeDamage(int damage)
         {
@@ -95,7 +92,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             
             UpdateHealthBar(healthPercent);
             
-            Vector3 bloodDirection = (GetPosition() - playerPosition).normalized;
+            Vector3 bloodDirection = (GetPosition() - _playerPosition).normalized;
             BloodParticleSystemHandler.Instance.SpawnBlood(GetPosition(), bloodDirection);
             if (_currentHealth <= 0)
             {
@@ -106,8 +103,8 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
                 Timing.RunCoroutine(EnemyDeath());
             }
         }
-    
-        protected void OnCollisionEnter2D(Collision2D other)
+
+        private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.GetComponent<BulletData>() != null)
             {
@@ -126,7 +123,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             bullet.SetActive(false);
         }
 
-        protected Vector3 GetPosition()
+        private Vector3 GetPosition()
         {
             return transform.position;
         }
@@ -179,7 +176,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         
         public void SetSpawnArea(SpawnAreaName areaName)
         {
-            spawnArea = areaName;
+            _spawnArea = areaName;
         }
     }
 }
