@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using WarKiwiCode.Game_Files.Scripts.Core;
 
-namespace WarKiwiCode.Game_Files.Scripts.Managers
+namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
 {
     public class PlayerWeaponManager : MonoBehaviour
     {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
+﻿using System.Collections.Generic;
 using DG.Tweening;
 using MEC;
 using UnityEngine;
@@ -9,75 +7,46 @@ using WarKiwiCode.Game_Files.Scripts.Core.Attack;
 using WarKiwiCode.Game_Files.Scripts.Core.Movement;
 using WarKiwiCode.Game_Files.Scripts.Managers;
 using WarKiwiCode.Game_Files.Scripts.Projectiles;
-using Random = UnityEngine.Random;
-
 
 namespace WarKiwiCode.Game_Files.Scripts.Core
 {
-    public enum EnemyType
-    {
-        SlowMelee,
-        NormalMelee,
-        FastMelee,
-        PistolRanged,
-        SmgRanged,
-        RpgRanged
-    }
-    
     [RequireComponent(typeof(EnemyMovement))]
     public sealed class Enemy : MonoBehaviour, IPooledObject, ISpawnable
     {
         [SerializeField] private Light2D enemyLight;
         [SerializeField] private int maxHealth;
-        
-        
         [SerializeField] private SpriteRenderer healthBarSprite;
         [SerializeField] private SpriteRenderer healthBackgroundSprite;
         [Tooltip("The Bar container")]
         [SerializeField] private Transform healthBar;
 
-
-        
-
         private int _currentHealth;
         private SpriteRenderer _sprite;
         private Collider2D _collider;
         private EnemyMovement _enemyMovement;
-        private EnemyAttack _enemyAttack;
-
+        private IAttack _enemyAttack;
         // TODO: Check if we need the ISpawnable interface that sets the spawn area name
         private SpawnAreaName _spawnArea;
-        private SpawnManager _spawnManager;
+        //private SpawnManager _spawnManager;
         private Vector3 _playerPosition;
-
-
-        private void Start()
-        {
-            /*
-            _collider = GetComponent<Collider2D>();
-            _sprite = GetComponent<SpriteRenderer>();
-            currentHealth = maxHealth;
-            HideHealthBar();
-            GetSpawnArea(GetPosition());
-            FindNearestPlayer();
-            SetMovementType();
-            */
-        }
+        private string _enemySpawnName;
 
         public void OnSpawn()
         {
             _collider = GetComponent<Collider2D>();
             _sprite = GetComponent<SpriteRenderer>();
             _enemyMovement = GetComponent<EnemyMovement>();
-            _spawnManager = SpawnManager.instance;
+            _enemyAttack = GetComponent<IAttack>();
+            //_spawnManager = SpawnManager.instance;
             _sprite.DOFade(1, 0.01f);
             _collider.enabled = true;
             enemyLight.intensity = 1;
             _currentHealth = maxHealth;
             HideHealthBar();
             _enemyMovement.InitializeMovement();
-            _enemyAttack.InitializeAttackPattern();
+            _enemyAttack.InitializeAttack();
             _playerPosition = _enemyMovement.FindNearestPlayer();
+            
         }
 
         private void TakeDamage(int damage)
@@ -87,11 +56,8 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             {
                 ShowHealthBar();
             }
-
             float healthPercent = (float)_currentHealth / maxHealth;
-            
             UpdateHealthBar(healthPercent);
-            
             Vector3 bloodDirection = (GetPosition() - _playerPosition).normalized;
             BloodParticleSystemHandler.Instance.SpawnBlood(GetPosition(), bloodDirection);
             if (_currentHealth <= 0)
@@ -99,7 +65,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
                 _enemyMovement.DisableEnemyMovement(true);
                 _currentHealth = 0;
                 HideHealthBar();
-                //Die
+                // Die
                 Timing.RunCoroutine(EnemyDeath());
             }
         }
@@ -112,7 +78,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
                 
                 // Collided with a bullet
                 TakeDamage(damage);
-
                 Timing.RunCoroutine(DisableBullet(other.gameObject).CancelWith(gameObject));
             }
         }
@@ -123,23 +88,19 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             bullet.SetActive(false);
         }
 
-        private Vector3 GetPosition()
-        {
-            return transform.position;
-        }
-
         private IEnumerator<float> EnemyDeath()
         {
             // TODO: Might wanna change the enemy death animation.
-            
             _collider.enabled = false;
             enemyLight.intensity = 0;
+            _enemyAttack.EndAttackWhenDead();
             _sprite.DOFade(0, 1f);
             yield return Timing.WaitForSeconds(1f);
             GameObject thisEnemy = gameObject;
             thisEnemy.SetActive(false);
-            // BUG: HAY QUE HACER OVERRIDE A ESTE DESPAWN!
-            ObjectPoolerManager.instance.Despawn("EnemySlowMelee", thisEnemy);
+            // TODO: Revisar que esto sirva
+            _enemyMovement.RemoveFinalPositionFromList();
+            ObjectPoolerManager.instance.Despawn(_enemySpawnName, thisEnemy);
         }
 
         private void HideHealthBar()
@@ -150,33 +111,25 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             healthBackgroundSprite.enabled = false;
         }
 
-        private bool HealthBarEnabled()
-        {
-            return healthBarSprite.enabled && healthBackgroundSprite.enabled;
-        }
-
         private void ShowHealthBar()
         {
             healthBarSprite.enabled = true;
             healthBackgroundSprite.enabled = true;
             
             Sequence showHealthBar = DOTween.Sequence();
-
             showHealthBar.Append(healthBarSprite.DOFade(1, 0.25f));
             showHealthBar.Join(healthBackgroundSprite.DOFade(1, 0.25f));
-
             showHealthBar.Play();
         }
-
-        private void UpdateHealthBar(float value)
-        {
-            healthBar.DOScaleX(value, 0.1f);
-        }
-
         
-        public void SetSpawnArea(SpawnAreaName areaName)
-        {
-            _spawnArea = areaName;
-        }
+        private Vector3 GetPosition() => transform.position;
+        
+        private bool HealthBarEnabled() => healthBarSprite.enabled && healthBackgroundSprite.enabled;
+
+        private void UpdateHealthBar(float value) => healthBar.DOScaleX(value, 0.1f);
+
+        public void SetSpawnArea(SpawnAreaName areaName) => _spawnArea = areaName;
+
+        public void SetEnemySpawnName(string spawnName) => _enemySpawnName = spawnName;
     }
 }

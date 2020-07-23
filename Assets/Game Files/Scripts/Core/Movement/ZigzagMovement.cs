@@ -147,6 +147,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                 }
                 
                 // Move towards the next waypoint
+                SetForwardVector(_waypoint);
                 transform.position = Vector3.MoveTowards(transform.position, _waypoint, step);
                 if (Vector3.Distance(transform.position, _waypoint) < 0.001f && _isMoving)
                 {
@@ -156,14 +157,23 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                         _queueEmpty = true;
                     }
                 }
-
             }
             else
             {
                 // Time to move towards the final position
                 if (canMove)
                 {
+                    SetForwardVector(finalPosition);
                     transform.position = Vector3.MoveTowards(transform.position, finalPosition, step);
+                }
+                else
+                {
+                    // If enemy finished moving, needs to start attacking.
+                    if (!attackStarted)
+                    {
+                        startAttacking.Invoke();
+                        attackStarted = true;
+                    }
                 }
                 canMove = !(Vector3.Distance(transform.position, finalPosition) < minDistanceToTargetPosition);
             }

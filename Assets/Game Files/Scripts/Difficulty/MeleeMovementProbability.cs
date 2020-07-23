@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using WarKiwiCode.Game_Files.Scripts.Core;
+using WarKiwiCode.Game_Files.Scripts.Utilities;
 
 namespace WarKiwiCode.Game_Files.Scripts.Difficulty
 {
@@ -13,7 +13,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Difficulty
     [System.Serializable]
     public class MeleeMovement
     {
-        public MeleeEnemyType enemyType;
+        public EnemyType.MeleeEnemyType enemyType;
         public float rushChance;
         public float flankChance;
         public float zigzagChance;

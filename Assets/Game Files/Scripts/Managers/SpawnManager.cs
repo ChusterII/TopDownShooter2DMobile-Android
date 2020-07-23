@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using WarKiwiCode.Game_Files.Scripts.Core;
 using WarKiwiCode.Game_Files.Scripts.Difficulty;
 using WarKiwiCode.Game_Files.Scripts.Utilities;
 using Random = UnityEngine.Random;
@@ -24,14 +23,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         [SerializeField] private Transform bottomRightFlankTarget;
         [SerializeField] private Transform bottomLeftFlankPosition;
         [SerializeField] private Transform bottomRightFlankPosition;
-        [Header("")]
-        
 
         private ObjectPoolerManager _objectPooler;
-        private Dictionary<MeleeEnemyType, List<string>> _meleeNamesDictionary = new Dictionary<MeleeEnemyType, List<string>>();
         private delegate SpawnPositionAndArea SpawnDelegate();
-        private delegate string[] NameDelegate(MeleeEnemyType enemyType);
-        
+
         public static SpawnManager instance;
         
         private void Awake()
@@ -50,14 +45,12 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         /// </summary>
         public void SpawnEnemies(SpawnData spawnData)
         {
-            // Choose enemy
+           // Choose enemy
             string topEnemy = SelectEnemyToSpawn(spawnData);
             string bottomEnemy = SelectEnemyToSpawn(spawnData);
-            
             // Spawn the enemies
             SpawnEnemy(topEnemy, SpawnEnemyTop);
-            SpawnEnemy(bottomEnemy, SpawnEnemyBottom);
-
+            //SpawnEnemy(bottomEnemy, SpawnEnemyBottom);
         }
 
         private static string SelectEnemyToSpawn(SpawnData spawnData)
@@ -69,122 +62,90 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             bool isMeleeEmpty = Array.TrueForAll(spawnData.MeleeData, data => data.spawnChance == 0);
             bool isRangedEmpty = Array.TrueForAll(spawnData.RangedData, data => data.spawnChance == 0);
 
-            
-            // TODO: CHANGE PARAMETERS OF FINDSUITABLEXXXXENEMY TO SPAWNDATA.
             // If neither is empty, then randomly choose an enemy from either list
             if (!isMeleeEmpty && !isRangedEmpty)
             {
                 enemyName = Random.Range(0, 2) == 0
-                    ? FindSuitableMeleeEnemy(spawnData.MeleeData, spawnData.MeleeMovementProbability)
-                    : FindSuitableRangedEnemy(spawnData.RangedData, spawnData.RangedMovementProbability);
+                    ? FindSuitableMeleeEnemy(spawnData)
+                    : FindSuitableRangedEnemy(spawnData);
             }
             else 
             {
                 // If melee is empty, then get an enemy from Ranged and viceversa.
                 enemyName = isMeleeEmpty
-                    ? FindSuitableRangedEnemy(spawnData.RangedData, spawnData.RangedMovementProbability)
-                    : FindSuitableMeleeEnemy(spawnData.MeleeData, spawnData.MeleeMovementProbability);
+                    ? FindSuitableRangedEnemy(spawnData)
+                    : FindSuitableMeleeEnemy(spawnData);
             }
             return enemyName;
         }
 
-        private static string FindSuitableRangedEnemy(IList<RangedEnemySpawnData> rangedSpawnData, RangedMovementProbability rangedMovementProbability)
+        private static string FindSuitableRangedEnemy(SpawnData spawnData)
         {
             bool foundSuitableEnemy = false;
             string enemyName = "";
             while (!foundSuitableEnemy)
             {
-                int randomIndex = Random.Range(0, rangedSpawnData.Count);
-                if (rangedSpawnData[randomIndex].spawnChance > 0)
+                int randomIndex = Random.Range(0, spawnData.RangedData.Length);
+                if (spawnData.RangedData[randomIndex].spawnChance > 0)
                 {
-                    switch (rangedSpawnData[randomIndex].enemyType)
-                    {
-                        case RangedEnemyType.PistolRanged:
-                            enemyName = "EnemyPistolRanged";
-                            break;
-                        case RangedEnemyType.SmgRanged:
-                            enemyName = "EnemySmgRanged";
-                            break;
-                        case RangedEnemyType.RpgRanged:
-                            enemyName = "EnemyRpgRanged";
-                            break;
-                        default:
-                            enemyName = "EnemyPistolRanged";
-                            break;
-                    }
-
+                    enemyName = GetRangedEnemyNameFromMovementProbability(spawnData, spawnData.RangedData[randomIndex].enemyType);
                     foundSuitableEnemy = true;
                 }
             }
-
             return enemyName;
+            //return "EnemyNormalRushPistol";
         }
 
-        private static string FindSuitableMeleeEnemy(IList<MeleeEnemySpawnData> meleeSpawnData, MeleeMovementProbability meleeMovementProbability)
+        private static string FindSuitableMeleeEnemy(SpawnData spawnData)
         {
             bool foundSuitableEnemy = false;
             string enemyName = "";
-            MeleeMovement meleeMovement;
             while (!foundSuitableEnemy)
             {
-                int randomIndex = Random.Range(0, meleeSpawnData.Count);
-                if (meleeSpawnData[randomIndex].spawnChance > 0)
+                int randomIndex = Random.Range(0, spawnData.MeleeData.Length);
+                if (spawnData.MeleeData[randomIndex].spawnChance > 0)
                 {
-                    switch (meleeSpawnData[randomIndex].enemyType)
-                    {
-                        case MeleeEnemyType.SlowMelee:
-                            enemyName = GetSlowMeleeEnemyNameFromMovementProbability(meleeMovementProbability, MeleeEnemyType.SlowMelee, GetSlowMeleeEnemyNames);
-                            //enemyName = "EnemySlowRushMelee";
-                            break;
-                        case MeleeEnemyType.NormalMelee:
-                            enemyName = "EnemyNormalMelee";
-                            break;
-                        case MeleeEnemyType.FastMelee:
-                            enemyName = "EnemyFastMelee";
-                            break;
-                        default:
-                            enemyName = "EnemySlowMelee";
-                            break;
-                    }
-
+                    enemyName = GetMeleeEnemyNameFromMovementProbability(spawnData, spawnData.MeleeData[randomIndex].enemyType);
                     foundSuitableEnemy = true;
                 }
             }
-            //print(enemyName);
             return enemyName;
         }
-        
-        
-        
-        // TODO: Hacer que esto sirva para otros tipos de enemigos (solo sirve pa slow) - YA CASI!
-        private static string GetSlowMeleeEnemyNameFromMovementProbability(
-            MeleeMovementProbability meleeMovementProbability, MeleeEnemyType enemyType, NameDelegate nameDelegate)
+
+        private static string GetMeleeEnemyNameFromMovementProbability(SpawnData spawnData, EnemyType.MeleeEnemyType enemyType)
         {
             string enemyName;
-            MeleeMovement meleeMovement = meleeMovementProbability.meleeProbabilities.Find(movement =>
+            MeleeMovement meleeMovement = spawnData.MeleeMovementProbability.meleeProbabilities.Find(movement =>
                 movement.enemyType == enemyType);
+            MeleeEnemyTypeToNameContainer nameContainer =
+                spawnData.NameContainer.meleeEnemyTypeToNameContainer.Find(container =>
+                    container.meleeEnemyType == enemyType);
             float randomValue = Random.value;
 
-           if (randomValue < meleeMovement.rushChance)
+            if (randomValue < meleeMovement.rushChance)
             {
-                // Slow rushing enemy
-                //enemyName = "EnemySlowRushMelee";
-                enemyName = nameDelegate(enemyType)[0];
+                // Rushing enemy
+                enemyName = nameContainer.meleeEnemyNames[0];
             }
             else
             {
                 float increment = meleeMovement.flankChance + meleeMovement.rushChance;
-                enemyName = randomValue < increment ? "EnemySlowFlankMelee" : "EnemySlowZigzagMelee";
+                enemyName = randomValue < increment ? nameContainer.meleeEnemyNames[1] : nameContainer.meleeEnemyNames[2];
             }
-
             return enemyName;
         }
-
-        private static string[] GetSlowMeleeEnemyNames(MeleeEnemyType enemyType)
+        
+        private static string GetRangedEnemyNameFromMovementProbability(SpawnData spawnData, EnemyType.RangedEnemyType enemyType)
         {
-            return new[] {"EnemySlowRushMelee", "EnemySlowFlankMelee", "EnemySlowZigzagMelee"};
+            RangedMovement rangedMovement = spawnData.RangedMovementProbability.rangedProbabilities.Find(movement =>
+                movement.enemyType == enemyType);
+            RangedEnemyTypeToNameContainer nameContainer =
+                spawnData.NameContainer.rangedEnemyTypeToNameContainer.Find(container =>
+                    container.rangedEnemyType == enemyType);
+            float randomValue = Random.value;
+            string enemyName = randomValue < rangedMovement.rushChance ? nameContainer.rangedEnemyNames[0] : nameContainer.rangedEnemyNames[1];
+            return enemyName;
         }
-
 
         private void SpawnEnemy(string enemyName, SpawnDelegate spawnDelegate)
         {
@@ -193,18 +154,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 
             // Spawn the enemy object
             _objectPooler.Spawn(enemyName, spawnPositionAndArea.spawnPosition, Quaternion.identity, spawnPositionAndArea.spawnAreaName);
-
         }
 
-        private SpawnPositionAndArea SpawnEnemyTop()
-        {
-            return GetSpawningPosition(topSpawnAreas);
-        }
-        
-        private SpawnPositionAndArea SpawnEnemyBottom()
-        {
-            return GetSpawningPosition(bottomSpawnAreas);
-        }
+        private SpawnPositionAndArea SpawnEnemyTop() => GetSpawningPosition(topSpawnAreas);
+
+        private SpawnPositionAndArea SpawnEnemyBottom() => GetSpawningPosition(bottomSpawnAreas);
 
         private static SpawnPositionAndArea GetSpawningPosition(IReadOnlyList<SpawnArea> spawnAreas)
         {
@@ -238,8 +192,5 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 : new FlankInfo(bottomLeftFlankTarget.position, bottomLeftFlankPosition.position);
         }
 
-
     }
-
-    
 }

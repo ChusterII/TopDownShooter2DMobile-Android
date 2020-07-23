@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using WarKiwiCode.Game_Files.Scripts.Core;
-using WarKiwiCode.Game_Files.Scripts.Projectiles;
 
 namespace WarKiwiCode.Game_Files.Scripts.Managers
 {
     public class ObjectPoolerManager : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         public class Pool
         {
             public string tag;
@@ -50,18 +49,15 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private void InitializeDictionary()
         {
             _poolDictionary = new Dictionary<string, Queue<GameObject>>();
-
             foreach (Pool pool in pools)
             {
                 Queue<GameObject> objectPool = new Queue<GameObject>();
-
                 for (int i = 0; i < pool.size; i++)
                 {
                     GameObject obj = Instantiate(pool.prefab);
                     obj.SetActive(false);
                     objectPool.Enqueue(obj);
                 }
-
                 _poolDictionary.Add(pool.tag, objectPool);
             }
         }
@@ -73,29 +69,22 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 // Pool doesn't exist
                 return null;
             }
-
             // Find the pool that corresponds to the spawned object.
             Pool nextObjectToSpawnPool = pools.Find(pool => pool.tag.Equals(objectTag));
-
             if (nextObjectToSpawnPool.recycle)
             {
                 // Spawn the object
                 GameObject objectToSpawn = SpawnObjectFromPool(objectTag, position, rotation, areaName);
-                
                 // Place the object inside the queue
                 _poolDictionary[objectTag].Enqueue(objectToSpawn);
-
                 return objectToSpawn;
             }
-
             if (_poolDictionary[objectTag].Count > 0)
             {
                 // Spawn the object
                 GameObject objectToSpawn = SpawnObjectFromPool(objectTag, position, rotation, areaName);
-
                 return objectToSpawn;
             }
-
             // Pool empty
             return null;
         }
@@ -103,20 +92,16 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private GameObject SpawnObjectFromPool(string objectTag, Vector3 position, Quaternion rotation, SpawnAreaName areaName)
         {
             GameObject objectToSpawn = _poolDictionary[objectTag].Dequeue();
-
             objectToSpawn.SetActive(true);
             objectToSpawn.transform.position = position;
             objectToSpawn.transform.rotation = rotation;
-
             if (areaName != SpawnAreaName.None)
             {
                 // Check if it's an enemy and pass the area name
-                CheckForISpawnable(objectToSpawn, areaName);
+                CheckForISpawnable(objectToSpawn, areaName, objectTag);
             }
-
             // Check if it's an object with the OnSpawn Method
             CheckForIPooledObject(objectToSpawn);
-
             return objectToSpawn;
         }
 
@@ -131,10 +116,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             pooledObject?.OnSpawn();
         }
 
-        private static void CheckForISpawnable(GameObject obj, SpawnAreaName areaName)
+        private static void CheckForISpawnable(GameObject obj, SpawnAreaName areaName, string objectTag)
         {
-            // TODO: Revisar si se necesita eventualmente
             ISpawnable pooledObject = obj.GetComponent<ISpawnable>();
+            pooledObject?.SetEnemySpawnName(objectTag);
+            // TODO: Revisar si se necesita eventualmente
             pooledObject?.SetSpawnArea(areaName);
         }
         

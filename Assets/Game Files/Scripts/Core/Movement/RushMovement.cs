@@ -18,7 +18,17 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
             {
                 transform.position = Vector3.MoveTowards(transform.position, finalPosition, step);
             }
+            else
+            {
+                // If enemy finished moving, needs to start attacking.
+                if (!attackStarted)
+                {
+                    startAttacking.Invoke();
+                    attackStarted = true;
+                }
+            }
             canMove = !(Vector3.Distance(transform.position, finalPosition) < minDistanceToTargetPosition);
+            
         }
     }
 }

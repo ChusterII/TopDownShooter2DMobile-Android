@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using WarKiwiCode.Game_Files.Scripts.Utilities;
 
 namespace WarKiwiCode.Game_Files.Scripts.Difficulty
 {
@@ -9,17 +10,17 @@ namespace WarKiwiCode.Game_Files.Scripts.Difficulty
         public List<MeleeDifficultyLevel> meleeDifficultyLevels;
     }
     
-    public enum MeleeEnemyType
+    /*public enum MeleeEnemyType
     {
         SlowMelee,
         NormalMelee,
         FastMelee
-    }
+    }*/
     
     [System.Serializable]
     public struct MeleeEnemySpawnData
     {
-        public MeleeEnemyType enemyType;
+        public EnemyType.MeleeEnemyType enemyType;
         public float spawnChance;
     }
 

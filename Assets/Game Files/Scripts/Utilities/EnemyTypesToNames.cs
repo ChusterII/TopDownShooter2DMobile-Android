@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using WarKiwiCode.Game_Files.Scripts.Core;
-using WarKiwiCode.Game_Files.Scripts.Difficulty;
 
 namespace WarKiwiCode.Game_Files.Scripts.Utilities
 {
-    [CreateAssetMenu(fileName = "Enemy Types To Names", menuName = "Utility/Enemy Type To Name Container", order = 2)]
+    [CreateAssetMenu(fileName = "Enemy Types To Names", menuName = "Utility/Enemy Type To Name Container", order = 4)]
     public class EnemyTypesToNames : ScriptableObject
     {
-        public List<EnemyTypeToNameContainer> enemyTypeToNameContainer = new List<EnemyTypeToNameContainer>();
+        public List<MeleeEnemyTypeToNameContainer> meleeEnemyTypeToNameContainer = new List<MeleeEnemyTypeToNameContainer>();
+        public List<RangedEnemyTypeToNameContainer> rangedEnemyTypeToNameContainer = new List<RangedEnemyTypeToNameContainer>();
     }
 
     [Serializable]
-    public class EnemyTypeToNameContainer
+    public class MeleeEnemyTypeToNameContainer
     {
-        public EnemyType enemyType;
-        public List<string> enemyNames;
+        public EnemyType.MeleeEnemyType meleeEnemyType;
+        public List<string> meleeEnemyNames;
+    }
+    
+    [Serializable]
+    public class RangedEnemyTypeToNameContainer
+    {
+        public EnemyType.RangedEnemyType rangedEnemyType;
+        public List<string> rangedEnemyNames;
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
+﻿using WarKiwiCode.Game_Files.Scripts.Utilities;
+
+namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
 {
     public interface IRangedAttackType
     {
-        EnemyType GetAttackType();
-        EnemyWeaponData GetEnemyWeaponData();
+        EnemyType.RangedEnemyType GetAttackType();
+        EnemyWeapon GetEnemyWeaponData();
     }
 }

@@ -7,15 +7,12 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
     {
         public MeleeEnemySpawnData[] MeleeData { get; }
         public RangedEnemySpawnData[] RangedData { get; }
-        
         public MeleeMovementProbability MeleeMovementProbability { get; }
-        
         public RangedMovementProbability RangedMovementProbability { get; }
-
-        public EnemyTypeToNameContainer NameContainer { get; }
+        public EnemyTypesToNames NameContainer { get; }
 
         public SpawnData(MeleeEnemySpawnData[] meleeData, RangedEnemySpawnData[] rangedData,
-            MeleeMovementProbability meleeMovementProbability, RangedMovementProbability rangedMovementProbability, EnemyTypeToNameContainer nameContainer)
+            MeleeMovementProbability meleeMovementProbability, RangedMovementProbability rangedMovementProbability, EnemyTypesToNames nameContainer)
         {
             MeleeData = meleeData;
             RangedData = rangedData;

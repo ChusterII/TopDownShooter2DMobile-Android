@@ -1,6 +1,8 @@
-﻿namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
+﻿using UnityEngine;
+
+namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
 {
-    public class MeleeAttack : EnemyAttack
+    public class SmgRangedAttack : EnemyRangedAttack
     {
         // Start is called before the first frame update
         void Start()

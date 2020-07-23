@@ -1,51 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
+using WarKiwiCode.Game_Files.Scripts.Managers;
+using WarKiwiCode.Game_Files.Scripts.Utilities;
 
 namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
 {
-    public class PistolRangedAttack : EnemyAttack, IRangedAttackType
+    public class PistolRangedAttack : EnemyRangedAttack, IRangedAttackType
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        private GameObject _gameObject;
+
         
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            switch (state)
-            {
-                case State.Normal:
-                    state = State.Aiming;
-                    StartAimingAtTarget();
-                    break;
-                case State.Aiming:
-                    UpdateAimingAtTarget();
-                    break;
-                case State.Attacking:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         protected override void Attack()
         {
-            
+            ObjectPoolerManager.instance.Spawn("EnemyPistolBullet", transform.position, transform.rotation,
+                SpawnAreaName.None);
         }
 
-        
-
-        public EnemyType GetAttackType()
+        public EnemyType.RangedEnemyType GetAttackType()
         {
-            return EnemyType.PistolRanged;
+            return EnemyType.RangedEnemyType.Pistol;
         }
 
-        // Enemy Pistol Data
-        public EnemyWeaponData GetEnemyWeaponData()
+        public EnemyWeapon GetEnemyWeaponData()
         {
-            return new EnemyWeaponData(2.5f, 3.5f);
+            return weapon;
         }
     }
 }

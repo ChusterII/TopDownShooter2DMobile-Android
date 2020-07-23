@@ -1,9 +1,8 @@
-﻿using DG.Tweening.Plugins.Options;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace WarKiwiCode.Game_Files.Scripts.Managers
+namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
 {
     public class PlayerInputManager : MonoBehaviour
     {

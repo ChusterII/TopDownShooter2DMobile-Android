@@ -17,13 +17,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         [SerializeField] private RangedMovementProbability rangedMovementProbability;
         
         [Header("Settings")] 
-        [SerializeField] private EnemyTypeToNameContainer enemyNamesContainer;
+        [SerializeField] private EnemyTypesToNames enemyNamesContainer;
         [SerializeField] private float spawnCooldown = 1f;
         [SerializeField] private float stageMaxTime;
-        
-        
-        
-        
+
         [Header("Testing")] 
         [SerializeField] private int difficultyLevel = 0;
         
@@ -53,9 +50,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         void Start()
         {
             _spawnManager = SpawnManager.instance;
-            
             GetSpawnDataFromDifficulty();
-
             Timing.RunCoroutine(GameLoop().CancelWith(gameObject));
         }
 
@@ -85,12 +80,8 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 {
                     _canSpawn = false;
                 }
+                yield return Timing.WaitForOneFrame;
             }
-            yield return Timing.WaitForOneFrame;
         }
-        
-        
-        
-        
     }
 }

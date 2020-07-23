@@ -16,11 +16,11 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - BulletDespawner
+  - Bullet
+  - EnemyBullet
+  - Player
   - 
   - 
   - 

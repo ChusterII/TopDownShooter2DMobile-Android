@@ -12,34 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d196a3c201e8a7a4ba4edd0527522021, type: 3}
   m_Name: Enemy Types To Names
   m_EditorClassIdentifier: 
-  enemyTypeToNameContainer:
-  - enemyType: 0
-    enemyNames:
+  meleeEnemyTypeToNameContainer:
+  - meleeEnemyType: 0
+    meleeEnemyNames:
     - EnemySlowRushMelee
     - EnemySlowFlankMelee
     - EnemySlowZigzagMelee
-  - enemyType: 1
-    enemyNames:
+  - meleeEnemyType: 1
+    meleeEnemyNames:
     - 
     - 
     - 
-  - enemyType: 2
-    enemyNames:
+  - meleeEnemyType: 2
+    meleeEnemyNames:
     - 
     - 
     - 
-  - enemyType: 3
-    enemyNames:
+  rangedEnemyTypeToNameContainer:
+  - rangedEnemyType: 0
+    rangedEnemyNames:
     - EnemyNormalRushPistol
+    - EnemyNormalRushPistol
+  - rangedEnemyType: 1
+    rangedEnemyNames:
     - 
     - 
-  - enemyType: 4
-    enemyNames:
-    - 
-    - 
-    - 
-  - enemyType: 5
-    enemyNames:
-    - 
+  - rangedEnemyType: 2
+    rangedEnemyNames:
     - 
     - 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7375398329610559755}
   - component: {fileID: 4487050576494657398}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4580537076365677679}
   - component: {fileID: 7235451333742344987}
   - component: {fileID: 6590780204487286769}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pistol Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 321028530589833614}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 6047520899293738148}
   m_LocalRotation: {x: 0, y: 0, z: 0.13052616, w: 0.9914449}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.05, z: 1}
   m_Children:
   - {fileID: 4190029969652798527}
   m_Father: {fileID: 80339058981780996}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6177692751038381064}
   - component: {fileID: 6177692751038381065}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6177692751340373238}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6177692751998932041}
   - component: {fileID: 6177692751998932042}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,8 +189,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 1
   m_FalloffIntensity: 0.596
-  m_Color: {r: 0.7137255, g: 0.99215686, b: 0.15294118, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 0.6136042, b: 0, a: 1}
+  m_Intensity: 2
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 3d95c0a000000000
   m_LightCookieSprite: {fileID: 0}
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 0.66
+  m_PointLightOuterRadius: 0.75
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
@@ -225,7 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6177692752233029890}
   - component: {fileID: 6177692752233029891}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bar Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6177692752569729575}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6177692752825227304}
   - component: {fileID: 6177692752825227305}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bar Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 4521221704004800411}
   - component: {fileID: 5723300452908193429}
   - component: {fileID: 864459997178650805}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy (Normal - Rush - Pistol)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -481,7 +481,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c94873e7603cf794fb77f8245867f167, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.94509804, b: 0.68235296, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -540,9 +540,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ed8d9f526986c4499b65a6b2e1cdc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   minDistanceToTargetPosition: 0.01
-  targetPositionType: 1
+  startAttacking:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 864459997178650805}
+        m_MethodName: StartAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5723300452908193429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,8 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 989195562e6913e4d8f6e3006a21b09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireCooldown: 3
-  numberOfBulletsFired: 1
+  weapon: {fileID: 11400000, guid: 1abf8526d0218b7439d646a61d73af14, type: 2}
   aimSpeed: 10
   aimTransform: {fileID: 80339058981780996}
   aimLeftTransform: {fileID: 321028530589833614}
@@ -590,7 +602,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4190029969652798527}
   - component: {fileID: 2805252846683014370}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -605,8 +617,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7307342954996908969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.005, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 321028530589833614}
   m_RootOrder: 0
@@ -670,7 +682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3584395973785763734}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +698,7 @@ Transform:
   m_GameObject: {fileID: 8112727731635410322}
   m_LocalRotation: {x: 0, y: 0, z: -0.13052624, w: 0.9914449}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.05, z: 1}
   m_Children:
   - {fileID: 4327368941117669133}
   m_Father: {fileID: 80339058981780996}
@@ -701,7 +713,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 80339058981780996}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Aim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -734,7 +746,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4327368941117669133}
   - component: {fileID: 3817993833436489848}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -749,8 +761,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8945694625674560172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.005, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 3584395973785763734}
   m_RootOrder: 0

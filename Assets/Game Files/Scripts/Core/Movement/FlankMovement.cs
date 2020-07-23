@@ -32,6 +32,15 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                 TryMoveFlankingTowards(_moveToPosition, flankInfo.flankPosition, step);
                 TryMoveFlankingTowards(_moveToPlayer, finalPosition, step);
             }
+            else
+            {
+                // If enemy finished moving, needs to start attacking.
+                if (!attackStarted)
+                {
+                    startAttacking.Invoke();
+                    attackStarted = true;
+                }
+            }
             CheckIfReached(ref _moveToTarget, flankInfo.flankTarget, ref _moveToPosition);
             CheckIfReached(ref _moveToPosition, flankInfo.flankPosition, ref _moveToPlayer);
             canMove = !(Vector3.Distance(transform.position, finalPosition) < minDistanceToTargetPosition && _moveToPlayer);
@@ -41,6 +50,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
         {
             if (flankingStage)
             {
+                SetForwardVector(target);
                 transform.position = Vector3.MoveTowards(transform.position, target, speed);
             }
         }

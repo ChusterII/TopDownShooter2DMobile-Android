@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeMonkey.Utils;
-using DG.Tweening;
 using MEC;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +7,7 @@ using UnityEngine.Serialization;
 using WarKiwiCode.Game_Files.Scripts.Core;
 using Random = UnityEngine.Random;
 
-namespace WarKiwiCode.Game_Files.Scripts.Managers
+namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
 {
     [System.Serializable]
     public class MuzzleFlash
@@ -55,7 +53,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private float _weaponRofTimer = 0;
         private float _reloadTimer = 0;
         private Dictionary<WeaponType, Weapon> _availableWeapons;
-        private bool isReloading;
+        private bool _isReloading;
         
         private void Start()
         {
@@ -82,7 +80,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private void Update()
         {
             _weaponRofTimer += Time.deltaTime;
-            if (isReloading)
+            if (_isReloading)
             {
                 _reloadTimer += Time.deltaTime;
             }
@@ -168,7 +166,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             
             // Reset the timer and start it
             _reloadTimer = 0;
-            isReloading = true;
+            _isReloading = true;
             
             // Play reloading sound
             _audioSource.PlayOneShot(_currentWeapon.reloadingSound);
@@ -186,7 +184,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             }
             
             // Stop the timer
-            isReloading = false;
+            _isReloading = false;
             
             // Set the new ammo level
             _currentAmmo = _currentWeapon.maxAmmo;
