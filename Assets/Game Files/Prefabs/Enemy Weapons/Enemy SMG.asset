@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df7e1592ab4848d7a706b38b719e0ad5, type: 3}
-  m_Name: Enemy Pistol
+  m_Name: Enemy SMG
   m_EditorClassIdentifier: 
-  weaponMinRange: 2.75
-  weaponMaxRange: 4.5
+  weaponMinRange: 3.75
+  weaponMaxRange: 5.5
   weaponCooldown: 2
-  automatic: 0
-  rateOfFire: 1
-  bulletsToFire: 1
+  isAutomatic: 1
+  rateOfFire: 0.15
+  bulletsToFire: 3

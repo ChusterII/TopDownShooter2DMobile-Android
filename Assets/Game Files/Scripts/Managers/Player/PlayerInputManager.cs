@@ -9,8 +9,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
         [System.Serializable]
         public class Vector2Event : UnityEvent<Vector2>{}
 
-        public Vector2Event onTouchTop;
-        public Vector2Event onTouchBottom;
+        //public Vector2Event onTouchTop;
+        //public Vector2Event onTouchBottom;
+        public UnityEvent onTouchTop;
+        public UnityEvent onTouchBottom;
 
         // TEST OPTION
         [SerializeField] private bool holdAllowed;
@@ -125,7 +127,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                 if (_topTouchesTotal == 1)
                 {
                     _touchedTop = true;
-                    onTouchTop.Invoke(_touchedPosition);
+                    onTouchTop.Invoke();
                 }
             }
             else
@@ -153,7 +155,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                 if (_bottomTouchesTotal == 1)
                 {
                     _touchedTop = false;
-                    onTouchBottom.Invoke(_touchedPosition);
+                    onTouchBottom.Invoke();
                 }
             }
         }
@@ -172,7 +174,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                         if (_topTouchesTotal == 1)
                         {
                             _touchedTop = true;
-                            onTouchTop.Invoke(_touchedPosition);
+                            onTouchTop.Invoke();
                         }
                         else
                         {
@@ -184,7 +186,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                         if (_topTouchesTotal == 1)
                         {
                             _touchedTop = true;
-                            onTouchTop.Invoke(_touchedPosition);
+                            onTouchTop.Invoke();
                         }
                         else
                         {
@@ -203,7 +205,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                         if (_bottomTouchesTotal == 1)
                         {
                             _touchedTop = false;
-                            onTouchBottom.Invoke(_touchedPosition);
+                            onTouchBottom.Invoke();
                         }
                         else
                         {
@@ -215,7 +217,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                         if (_bottomTouchesTotal == 1)
                         {
                             _touchedTop = false;
-                            onTouchBottom.Invoke(_touchedPosition);
+                            onTouchBottom.Invoke();
                         }
                         else
                         {

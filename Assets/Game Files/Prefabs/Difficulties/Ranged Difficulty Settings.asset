@@ -22,8 +22,8 @@ MonoBehaviour:
       spawnChance: 0
   - rangedEnemySpawnData:
     - enemyType: 0
-      spawnChance: 1
+      spawnChance: 0.5
     - enemyType: 1
-      spawnChance: 0
+      spawnChance: 0.5
     - enemyType: 2
       spawnChance: 0

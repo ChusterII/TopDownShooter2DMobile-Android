@@ -87,14 +87,14 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
             
         }
 
-        public void Shoot(Vector2 shootPosition)
+        public void Shoot()
         {
             // Get the direction of the touch
             Vector3 direction = (playerInput.GetTouchedPosition() - _playerPosition).normalized;
-
+            
             // Get the angle between the up direction and where the touch was. 
             _touchedAngle = Vector2.SignedAngle(Vector2.up, direction);
-
+            
             // Line up the rotation towards the touched point on screen
             transform.up = direction;
 
@@ -135,7 +135,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                 }
                 
                 // Play firing sound
-                _audioSource.PlayOneShot(_currentWeapon.firingSound);
+                //_audioSource.PlayOneShot(_currentWeapon.firingSound);
+                _audioSource.clip = _currentWeapon.firingSound;
+                _audioSource.PlayOneShot(_audioSource.clip);
                 
                 // Spawn the casing
                 spawnShell.Invoke(spawnPosition, direction, _currentWeapon.name);

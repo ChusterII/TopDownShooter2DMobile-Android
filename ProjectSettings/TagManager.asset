@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PlayerTop
   - PlayerBottom
+  - EnemyBullet
+  - HealthBarParent
   layers:
   - Default
   - TransparentFX

@@ -9,7 +9,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Projectiles
     {
         private void OnTriggerEnter2D(Collider2D other)
         {
-            print("entered");
             Timing.RunCoroutine(DisableBullet(other.gameObject));
         }
 

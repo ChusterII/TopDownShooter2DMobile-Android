@@ -8,5 +8,8 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
         public float weaponMinRange;
         public float weaponMaxRange;
         public float weaponCooldown;
+        public bool isAutomatic;
+        public float rateOfFire;
+        public float bulletsToFire;
     }
 }

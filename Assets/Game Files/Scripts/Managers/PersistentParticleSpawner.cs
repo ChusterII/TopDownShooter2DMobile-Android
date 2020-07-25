@@ -20,7 +20,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                     uvIndex = 0;
                     break;
                 case "Shotgun":
-                    print("shotgun uv" + uvIndex);
                     uvIndex = 1;
                     break;
                 case "Assault Rifle":

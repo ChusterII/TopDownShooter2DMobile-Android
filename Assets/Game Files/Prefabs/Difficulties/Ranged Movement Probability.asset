@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rangedProbabilities:
   - enemyType: 0
-    rushChance: 1
-    zigzagChance: 0
+    rushChance: 0.5
+    zigzagChance: 0.5
   - enemyType: 1
-    rushChance: 0.3
-    zigzagChance: 0.7
+    rushChance: 0
+    zigzagChance: 1
   - enemyType: 2
     rushChance: 0.8
     zigzagChance: 0.2

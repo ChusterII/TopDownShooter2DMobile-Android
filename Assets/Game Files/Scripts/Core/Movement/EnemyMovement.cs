@@ -61,7 +61,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
         {
             if (AllFinalPositionsRanged.Count > 0 && _enemyRangedAttackType != null)
             {
-                print("entered check");
+                //print("entered check");
                 bool foundSuitableFinalPosition = false;
                 List<Vector3> closestPoints = new List<Vector3>();
                 while (!foundSuitableFinalPosition)
@@ -76,13 +76,13 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                     }
                     if (closestPoints.Count == 0)
                     {
-                        print("Check passed.");
+                        //print("Check passed.");
                         foundSuitableFinalPosition = true;
                     }
                     else
                     {
-                        print("Check failed with a count of: " + closestPoints.Count);
-                        print("Getting a new position.");
+                        //print("Check failed with a count of: " + closestPoints.Count);
+                        //print("Getting a new position.");
                         // Select a new spawn point
                         CalculateFinalPosition();
                         closestPoints.Clear();
@@ -90,7 +90,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                 }
             }
             AllFinalPositionsRanged.Add(finalPosition);
-            print("Position: " + finalPosition + " added.");
+            //print("Position: " + finalPosition + " added.");
         }
 
         private void CalculateFinalPosition()
@@ -131,7 +131,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
 
         public void RemoveFinalPositionFromList()
         {
-            print("Position: " + finalPosition + " removed.");
+            //print("Position: " + finalPosition + " removed.");
             AllFinalPositionsRanged.Remove(finalPosition);
         }
     }

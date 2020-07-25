@@ -37,6 +37,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
         private bool _hasToAttack;
 
         private float _cooldownTimer;
+        protected float rofTimer;
         
         protected enum State
         {
@@ -49,6 +50,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
 
         void Update()
         {
+            if (weapon.isAutomatic)
+            {
+                rofTimer += Time.deltaTime;
+            }
             _cooldownTimer += Time.deltaTime;
             switch (state)
             {
@@ -72,7 +77,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
                     {
                         state = State.StartAiming;
                     }
-                    _hasToAttack = false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -156,13 +160,19 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
 
         private IEnumerator<float> AttackSignal()
         {
-            while (!_hasToAttack)
+            while (true)
             {
-                // Wait until the hasToAttack flag has been raised.
+                while (!_hasToAttack)
+                {
+                    // Wait until the hasToAttack flag has been raised.
+                    yield return Timing.WaitForOneFrame;
+                }
+                // Attack and loop again
+                Attack();
+                _hasToAttack = false;
                 yield return Timing.WaitForOneFrame;
             }
-            // Meter un loop aca o algo
-            Attack();
+            // ReSharper disable once IteratorNeverReturns
         }
 
         private void HideAim() => aimTransform.gameObject.SetActive(false);

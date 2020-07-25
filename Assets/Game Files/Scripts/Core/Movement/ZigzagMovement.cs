@@ -9,7 +9,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
 {
     public class ZigzagMovement : EnemyMovement
     {
+        [Tooltip("Tells the waypoint calculation algorithm where to stop making waypoints.")]
         [SerializeField] private float minimumDistanceToPlayer = 2f;
+        [Tooltip("Minimum distance between zigzagging points.")]
         [SerializeField] private float minimumZigZagDistance = 2f;
         
         

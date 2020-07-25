@@ -22,7 +22,7 @@ MonoBehaviour:
       spawnChance: 0
   - meleeEnemySpawnData:
     - enemyType: 0
-      spawnChance: 0
+      spawnChance: 1
     - enemyType: 1
       spawnChance: 0
     - enemyType: 2

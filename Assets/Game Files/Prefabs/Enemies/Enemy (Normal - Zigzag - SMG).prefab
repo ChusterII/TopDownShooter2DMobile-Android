@@ -427,11 +427,11 @@ GameObject:
   - component: {fileID: 6177692752827757641}
   - component: {fileID: 6177692752827757636}
   - component: {fileID: 6177692752827757643}
-  - component: {fileID: 4521221704004800411}
+  - component: {fileID: 2654061443294652559}
   - component: {fileID: 5723300452908193429}
   - component: {fileID: 7705211336833578311}
   m_Layer: 9
-  m_Name: Enemy (Normal - Rush - SMG)
+  m_Name: Enemy (Normal - Zigzag - SMG)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -541,7 +541,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &4521221704004800411
+--- !u!114 &2654061443294652559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6177692752827757640}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9ed8d9f526986c4499b65a6b2e1cdc0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b00bb49fbdc2ec458edd08d172eb485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
@@ -569,6 +569,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  minimumDistanceToPlayer: 3.5
+  minimumZigZagDistance: 1.8
 --- !u!114 &5723300452908193429
 MonoBehaviour:
   m_ObjectHideFlags: 0

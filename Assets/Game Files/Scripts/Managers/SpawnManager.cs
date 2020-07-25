@@ -45,12 +45,17 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         /// </summary>
         public void SpawnEnemies(SpawnData spawnData)
         {
-           // Choose enemy
-            string topEnemy = SelectEnemyToSpawn(spawnData);
-            string bottomEnemy = SelectEnemyToSpawn(spawnData);
-            // Spawn the enemies
-            SpawnEnemy(topEnemy, SpawnEnemyTop);
-            //SpawnEnemy(bottomEnemy, SpawnEnemyBottom);
+            int randomSpawns = Random.Range(1, 1);
+            for (int i = 0; i < randomSpawns; i++)
+            {
+                // Choose enemy
+                string topEnemy = SelectEnemyToSpawn(spawnData);
+                string bottomEnemy = SelectEnemyToSpawn(spawnData);
+                // Spawn the enemies
+                SpawnEnemy(topEnemy, SpawnEnemyTop);
+                //SpawnEnemy(bottomEnemy, SpawnEnemyBottom);
+            }
+           
         }
 
         private static string SelectEnemyToSpawn(SpawnData spawnData)
@@ -93,7 +98,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 }
             }
             return enemyName;
-            //return "EnemyNormalRushPistol";
         }
 
         private static string FindSuitableMeleeEnemy(SpawnData spawnData)

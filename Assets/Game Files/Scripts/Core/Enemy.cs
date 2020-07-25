@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using MEC;
 using UnityEngine;
@@ -30,6 +31,12 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         //private SpawnManager _spawnManager;
         private Vector3 _playerPosition;
         private string _enemySpawnName;
+        private float _originalLightIntensity;
+
+        private void Awake()
+        {
+            _originalLightIntensity = enemyLight.intensity;
+        }
 
         public void OnSpawn()
         {
@@ -40,11 +47,14 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             //_spawnManager = SpawnManager.instance;
             _sprite.DOFade(1, 0.01f);
             _collider.enabled = true;
-            enemyLight.intensity = 1;
+            enemyLight.intensity = _originalLightIntensity;
             _currentHealth = maxHealth;
             HideHealthBar();
             _enemyMovement.InitializeMovement();
-            _enemyAttack.InitializeAttack();
+            if (CheckForAttackInterface())
+            {
+                _enemyAttack.InitializeAttack();
+            }
             _playerPosition = _enemyMovement.FindNearestPlayer();
             
         }
@@ -93,7 +103,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             // TODO: Might wanna change the enemy death animation.
             _collider.enabled = false;
             enemyLight.intensity = 0;
-            _enemyAttack.EndAttackWhenDead();
+            if (CheckForAttackInterface())
+            {
+                _enemyAttack.EndAttackWhenDead();
+            }
             _sprite.DOFade(0, 1f);
             yield return Timing.WaitForSeconds(1f);
             GameObject thisEnemy = gameObject;
@@ -131,5 +144,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         public void SetSpawnArea(SpawnAreaName areaName) => _spawnArea = areaName;
 
         public void SetEnemySpawnName(string spawnName) => _enemySpawnName = spawnName;
+        
+        // TEST
+        private bool CheckForAttackInterface()
+        {
+            return GetComponent<IAttack>() != null;
+        }
     }
 }

@@ -32,11 +32,11 @@ MonoBehaviour:
   - rangedEnemyType: 0
     rangedEnemyNames:
     - EnemyNormalRushPistol
-    - EnemyNormalRushPistol
+    - EnemyNormalZigzagPistol
   - rangedEnemyType: 1
     rangedEnemyNames:
-    - 
-    - 
+    - EnemyNormalRushSMG
+    - EnemyNormalZigzagSMG
   - rangedEnemyType: 2
     rangedEnemyNames:
     - 
