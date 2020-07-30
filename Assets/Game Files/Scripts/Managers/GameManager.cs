@@ -51,7 +51,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         {
             _spawnManager = SpawnManager.instance;
             GetSpawnDataFromDifficulty();
-            Timing.RunCoroutine(GameLoop().CancelWith(gameObject));
+            
         }
 
         // Update is called once per frame
@@ -66,6 +66,12 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
            MeleeEnemySpawnData[] meleeSpawnData = meleeDifficulty.meleeDifficultyLevels[difficultyLevel].meleeEnemySpawnData;
            RangedEnemySpawnData[] rangedSpawnData = rangedDifficulty.rangedDifficultyLevels[difficultyLevel].rangedEnemySpawnData;
            _spawnData = new SpawnData(meleeSpawnData, rangedSpawnData, meleeMovementProbability, rangedMovementProbability, enemyNamesContainer);
+        }
+
+        public void StartGame()
+        {
+            print("called start Game");
+            Timing.RunCoroutine(GameLoop().CancelWith(gameObject));
         }
 
         private IEnumerator<float> GameLoop()

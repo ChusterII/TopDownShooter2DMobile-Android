@@ -164,10 +164,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack.Melee
 
         public void EndAttackWhenDead()
         {
-            if (_sequence.active)
+            /*if (_sequence.active)
             {
                 _sequence.Kill();
-            }
+            }*/
         }
         
         protected Vector3 GetPosition() => transform.position;

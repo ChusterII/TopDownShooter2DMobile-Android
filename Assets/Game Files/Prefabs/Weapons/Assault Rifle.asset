@@ -15,11 +15,15 @@ MonoBehaviour:
   name: Assault Rifle
   weaponType: 2
   maxAmmo: 30
-  damage: 1
+  startingClips: 1
+  damage: 2
   rateOfFire: 0.1
   reloadTime: 1
   allowsHold: 1
   spread: 4
   numberOfBullets: 1
+  splashRadius: 0
+  splashDamage: 0
+  isPiercing: 0
   firingSound: {fileID: 8300000, guid: 5102b0d5466f022439f293dceaae76a7, type: 3}
   reloadingSound: {fileID: 8300000, guid: 9e2a3745670df4149880b2256a3d33af, type: 3}

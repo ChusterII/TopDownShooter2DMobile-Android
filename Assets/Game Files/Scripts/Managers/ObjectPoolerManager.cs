@@ -30,7 +30,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             if (instance == null)
             {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {

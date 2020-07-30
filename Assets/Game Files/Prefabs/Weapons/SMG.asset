@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15b647f1bf6b1de4fb32f5926d31837d, type: 3}
-  m_Name: Shotgun
+  m_Name: SMG
   m_EditorClassIdentifier: 
-  name: Shotgun
-  weaponType: 1
-  maxAmmo: 6
+  name: SMG
+  weaponType: 2
+  maxAmmo: 25
   startingClips: 1
   damage: 1
-  rateOfFire: 0.5
-  reloadTime: 1.25
-  allowsHold: 0
-  spread: 10
-  numberOfBullets: 6
+  rateOfFire: 0.08
+  reloadTime: 0.8
+  allowsHold: 1
+  spread: 3
+  numberOfBullets: 1
   splashRadius: 0
   splashDamage: 0
   isPiercing: 0
-  firingSound: {fileID: 8300000, guid: 5bb4a3440bc845945a1a903762aee1c1, type: 3}
-  reloadingSound: {fileID: 8300000, guid: 4eed9684b9b73024ab64269c6b7b0e4d, type: 3}
+  firingSound: {fileID: 8300000, guid: fdd0f33404b2a9a409fc301f1c8e6f4e, type: 3}
+  reloadingSound: {fileID: 8300000, guid: 194138e956a4d914c8860e44be1d17cd, type: 3}

@@ -6,6 +6,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
     {
         Pistol,
         Shotgun,
+        Smg,
         AssaultRifle
     }
     
@@ -16,6 +17,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         [Tooltip("Max clip size")] 
         public WeaponType weaponType;
         public int maxAmmo;
+        public int startingClips;
         [Tooltip("Damage per bullet")]
         public float damage;
         public float rateOfFire;
@@ -26,6 +28,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
         public float spread;
         [Tooltip("How many bullets per shot will this gun spawn")]
         public float numberOfBullets;
+
+        public int splashRadius;
+        public int splashDamage;
+        public bool isPiercing;
+       
 
         public AudioClip firingSound;
         public AudioClip reloadingSound;

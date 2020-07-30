@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using DG.Tweening;
+using Doozy.Engine;
+using MEC;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace WarKiwiCode.Game_Files.Scripts.Managers
@@ -11,19 +16,32 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         
         [SerializeField] private TextMeshProUGUI currentWeaponButtonText;
 
+        [Header("Ammo fields")]
         [SerializeField] private TextMeshProUGUI player1MaxAmmoText;
         [SerializeField] private TextMeshProUGUI player1CurrentAmmoText;
         [SerializeField] private TextMeshProUGUI player2MaxAmmoText;
         [SerializeField] private TextMeshProUGUI player2CurrentAmmoText;
 
+        [Header("Reloading fields")]
         [SerializeField] private GameObject player1ReloadingText;
         [SerializeField] private GameObject player2ReloadingText;
-
         [SerializeField] private Slider player1ReloadingProgressBar;
         [SerializeField] private Slider player2ReloadingProgressBar;
         [SerializeField] private float progressBarFillSpeed = 0.5f;
-        private float _targetProgress = 0;
 
+        [Header("Start animations")]
+        [SerializeField] private GameObject tacticalModeGrid;
+        [SerializeField] private float gridSpeed;
+        [SerializeField] private Light2D backgroundLight;
+        [SerializeField] private GameObject player1;
+        [SerializeField] private GameObject player2;
+        [SerializeField] private GameObject blakeSprite;
+        [SerializeField] private GameObject zinjiSprite;
+        
+
+        private float _targetProgress = 0;
+        private Vector3 _gridOriginalPosition;
+        private float _backgroundLightOriginalIntensity;
 
         public static UiManager instance;
         private void Awake()
@@ -34,13 +52,37 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         // Start is called before the first frame update
         void Start()
         {
-        
+            _gridOriginalPosition = tacticalModeGrid.transform.position;
+            _backgroundLightOriginalIntensity = backgroundLight.intensity;
+            DisplayZinjiSprite(true);
+            DisplayBlakeSprite(true);
         }
 
-        // Update is called once per frame
-        void Update()
+        public void DisplayBlakeSprite(bool value)
         {
-           
+            blakeSprite.SetActive(value);
+            player2.SetActive(!value);
+        }
+
+        public void DisplayZinjiSprite(bool value)
+        {
+            zinjiSprite.SetActive(value);
+            player1.SetActive(!value);
+        }
+
+        public void StartTacticalMode()
+        {
+            print("Started Tactical Mode");
+            Timing.RunCoroutine(TacticalModeGridMovement());
+        }
+
+        private IEnumerator<float> TacticalModeGridMovement()
+        {
+            yield return Timing.WaitForSeconds(1f);
+            tacticalModeGrid.transform.DOMoveY(-_gridOriginalPosition.y, gridSpeed);
+            DOTween.To(() => backgroundLight.intensity, intensity => backgroundLight.intensity = intensity, 0.15f, gridSpeed);
+            yield return Timing.WaitForSeconds(gridSpeed);
+            GameEventMessage.SendEvent("Tactical Mode Animation Done");
         }
 
         public void SetWeaponButtonText(string weaponText)

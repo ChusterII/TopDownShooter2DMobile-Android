@@ -8,6 +8,8 @@ TagManager:
   - PlayerBottom
   - EnemyBullet
   - HealthBarParent
+  - Blake
+  - Zinji
   layers:
   - Default
   - TransparentFX
@@ -23,8 +25,8 @@ TagManager:
   - Bullet
   - EnemyBullet
   - Player
-  - 
-  - 
+  - PlayerSprites
+  - TacticalModeGrid
   - 
   - 
   - 

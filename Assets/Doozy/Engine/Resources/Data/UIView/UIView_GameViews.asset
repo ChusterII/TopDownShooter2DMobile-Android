@@ -16,7 +16,8 @@ MonoBehaviour:
   DatabaseType: 2
   Names:
   - Initial State
-  - Tactical View
+  - Tactical View Text
   - Game UI
   - Death State
   - Victory State
+  - Tactical View Animation
