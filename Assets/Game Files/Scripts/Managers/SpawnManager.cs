@@ -53,7 +53,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 string bottomEnemy = SelectEnemyToSpawn(spawnData);
                 // Spawn the enemies
                 SpawnEnemy(topEnemy, SpawnEnemyTop);
-                //SpawnEnemy(bottomEnemy, SpawnEnemyBottom);
+                SpawnEnemy(bottomEnemy, SpawnEnemyBottom);
             }
            
         }

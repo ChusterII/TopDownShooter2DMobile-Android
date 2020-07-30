@@ -20,14 +20,14 @@ MonoBehaviour:
     - EnemySlowZigzagMelee
   - meleeEnemyType: 1
     meleeEnemyNames:
-    - 
-    - 
-    - 
+    - EnemyNormalRushMelee
+    - EnemyNormalFlankMelee
+    - EnemyNormalZigzagMelee
   - meleeEnemyType: 2
     meleeEnemyNames:
-    - 
-    - 
-    - 
+    - EnemyFastRushMelee
+    - EnemyFastFlankMelee
+    - EnemyFastZigzagMelee
   rangedEnemyTypeToNameContainer:
   - rangedEnemyType: 0
     rangedEnemyNames:

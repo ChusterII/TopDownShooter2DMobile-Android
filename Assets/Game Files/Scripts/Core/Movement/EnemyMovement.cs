@@ -4,6 +4,7 @@ using Data.Util;
 using UnityEngine;
 using UnityEngine.Events;
 using WarKiwiCode.Game_Files.Scripts.Core.Attack;
+using WarKiwiCode.Game_Files.Scripts.Core.Attack.Ranged;
 using WarKiwiCode.Game_Files.Scripts.Managers;
 using Random = UnityEngine.Random;
 

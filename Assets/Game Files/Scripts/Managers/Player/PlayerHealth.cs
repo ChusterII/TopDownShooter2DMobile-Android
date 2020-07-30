@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using MEC;
 using UnityEngine;
 using WarKiwiCode.Game_Files.Scripts.Projectiles;
+using Thinksquirrel.CShake;
 
 namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
 {
     public class PlayerHealth : MonoBehaviour
     {
+        
+
         // Start is called before the first frame update
         void Start()
         {
-        
+            
+            
         }
 
         // Update is called once per frame
@@ -20,9 +25,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
         
         }
         
-        private void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             // Take damage
+            CameraShake.ShakeAll();
             print(gameObject.name + " took damage.");
         }
 

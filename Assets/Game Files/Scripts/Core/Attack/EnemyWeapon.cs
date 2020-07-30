@@ -11,5 +11,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack
         public bool isAutomatic;
         public float rateOfFire;
         public float bulletsToFire;
+        public bool isMelee;
+        [Tooltip("How many strikes will the attack make")]
+        public float meleeComboNumber;
+        [Tooltip("Speed of each strike")]
+        public float meleeComboSpeed;
+        public int meleeDamage;
     }
 }
