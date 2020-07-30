@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7def503041a1fb4448e2d009e732d233, type: 3}
   m_Name: Ranged Movement Probability
   m_EditorClassIdentifier: 
-  rushChance: 0
-  zigzagChance: 0
+  rangedProbabilities:
+  - enemyType: 0
+    rushChance: 0.5
+    zigzagChance: 0.5
+  - enemyType: 1
+    rushChance: 0
+    zigzagChance: 1
+  - enemyType: 2
+    rushChance: 0.8
+    zigzagChance: 0.2

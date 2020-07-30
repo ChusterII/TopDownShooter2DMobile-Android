@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using WarKiwiCode.Game_Files.Scripts.Core.Attack;
+using WarKiwiCode.Game_Files.Scripts.Core.Attack.Ranged;
 using Random = UnityEngine.Random;
 
 namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
 {
     public class ZigzagMovement : EnemyMovement
     {
+        [Tooltip("Tells the waypoint calculation algorithm where to stop making waypoints.")]
         [SerializeField] private float minimumDistanceToPlayer = 2f;
+        [Tooltip("Minimum distance between zigzagging points.")]
         [SerializeField] private float minimumZigZagDistance = 2f;
         
         
@@ -20,6 +24,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
         private bool _queueEmpty;
         private readonly Queue<Vector2> _zigzagCoordinates = new Queue<Vector2>();
         private Vector2 _waypoint;
+        private IRangedAttackType _rangedAttackType;
         
         // Testing
         //private Color _color;
@@ -27,8 +32,16 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
         // Start is called before the first frame update
         void Start()
         {
-            //_color = Random.ColorHSV();
-            //
+            
+            // Check if this is a ranged enemy, then modify the minimum distance to player
+            // so the final position is never behind the last zigzag position
+            _rangedAttackType = GetComponent<IRangedAttackType>();
+            if (_rangedAttackType != null)
+            {
+                minimumDistanceToPlayer = GetPosition().y >= 0 ? finalPosition.y + 0.5f : finalPosition.y - 0.5f;
+            }
+            
+            // Calculate all the coords for the zigzag and store them in a queue
             while (!_pickedZigZagCoordinates)
             {
                 if (CalculateInitialZigZagPositions()) continue;
@@ -137,6 +150,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                 }
                 
                 // Move towards the next waypoint
+                SetForwardVector(_waypoint);
                 transform.position = Vector3.MoveTowards(transform.position, _waypoint, step);
                 if (Vector3.Distance(transform.position, _waypoint) < 0.001f && _isMoving)
                 {
@@ -146,16 +160,25 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
                         _queueEmpty = true;
                     }
                 }
-
             }
             else
             {
-                // Time to move towards the player
+                // Time to move towards the final position
                 if (canMove)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, playerPosition, step);
+                    SetForwardVector(finalPosition);
+                    transform.position = Vector3.MoveTowards(transform.position, finalPosition, step);
                 }
-                canMove = !(Vector3.Distance(transform.position, playerPosition) < 0.9f);
+                else
+                {
+                    // If enemy finished moving, needs to start attacking.
+                    if (!attackStarted)
+                    {
+                        startAttacking.Invoke();
+                        attackStarted = true;
+                    }
+                }
+                canMove = !(Vector3.Distance(transform.position, finalPosition) < minDistanceToTargetPosition);
             }
 
         }

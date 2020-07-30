@@ -2,6 +2,7 @@
 using MEC;
 using UnityEngine;
 using WarKiwiCode.Game_Files.Scripts.Difficulty;
+using WarKiwiCode.Game_Files.Scripts.Utilities;
 
 namespace WarKiwiCode.Game_Files.Scripts.Managers
 {
@@ -15,13 +16,11 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         [SerializeField] private MeleeMovementProbability meleeMovementProbability;
         [SerializeField] private RangedMovementProbability rangedMovementProbability;
         
-        [Header("Settings")]
+        [Header("Settings")] 
+        [SerializeField] private EnemyTypesToNames enemyNamesContainer;
         [SerializeField] private float spawnCooldown = 1f;
         [SerializeField] private float stageMaxTime;
-        
-        
-        
-        
+
         [Header("Testing")] 
         [SerializeField] private int difficultyLevel = 0;
         
@@ -30,8 +29,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private float _stageTimer;
         private float _spawnTimer;
         private bool _canSpawn = true;
-        private MeleeEnemySpawnData[] _meleeSpawnData;
-        private RangedEnemySpawnData[] _rangedSpawnData;
+        private SpawnData _spawnData;
         
 
         public static GameManager instance;
@@ -52,9 +50,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         void Start()
         {
             _spawnManager = SpawnManager.instance;
-            
             GetSpawnDataFromDifficulty();
-
             Timing.RunCoroutine(GameLoop().CancelWith(gameObject));
         }
 
@@ -67,8 +63,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 
         private void GetSpawnDataFromDifficulty()
         {
-           _meleeSpawnData = meleeDifficulty.meleeDifficultyLevels[difficultyLevel].meleeEnemySpawnData;
-           _rangedSpawnData = rangedDifficulty.rangedDifficultyLevels[difficultyLevel].rangedEnemySpawnData;
+           MeleeEnemySpawnData[] meleeSpawnData = meleeDifficulty.meleeDifficultyLevels[difficultyLevel].meleeEnemySpawnData;
+           RangedEnemySpawnData[] rangedSpawnData = rangedDifficulty.rangedDifficultyLevels[difficultyLevel].rangedEnemySpawnData;
+           _spawnData = new SpawnData(meleeSpawnData, rangedSpawnData, meleeMovementProbability, rangedMovementProbability, enemyNamesContainer);
         }
 
         private IEnumerator<float> GameLoop()
@@ -77,18 +74,14 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             {
                 // Need to wait a bit before spawning because the SpawnManager hasn't loaded
                 yield return Timing.WaitForSeconds(3f);
-                _spawnManager.SpawnEnemies(_meleeSpawnData, _rangedSpawnData, meleeMovementProbability, rangedMovementProbability);
+                _spawnManager.SpawnEnemies(_spawnData);
                 yield return Timing.WaitForSeconds(spawnCooldown);
                 if (_stageTimer > stageMaxTime)
                 {
                     _canSpawn = false;
                 }
+                yield return Timing.WaitForOneFrame;
             }
-            yield return Timing.WaitForOneFrame;
         }
-        
-        
-        
-        
     }
 }

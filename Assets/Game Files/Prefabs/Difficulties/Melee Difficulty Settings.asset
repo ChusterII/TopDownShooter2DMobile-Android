@@ -15,7 +15,14 @@ MonoBehaviour:
   meleeDifficultyLevels:
   - meleeEnemySpawnData:
     - enemyType: 0
+      spawnChance: 0
+    - enemyType: 1
       spawnChance: 1
+    - enemyType: 2
+      spawnChance: 0
+  - meleeEnemySpawnData:
+    - enemyType: 0
+      spawnChance: 0
     - enemyType: 1
       spawnChance: 0
     - enemyType: 2

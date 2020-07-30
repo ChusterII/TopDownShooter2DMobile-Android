@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PlayerTop
   - PlayerBottom
+  - EnemyBullet
+  - HealthBarParent
   layers:
   - Default
   - TransparentFX
@@ -16,11 +18,11 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - BulletDespawner
+  - Bullet
+  - EnemyBullet
+  - Player
   - 
   - 
   - 

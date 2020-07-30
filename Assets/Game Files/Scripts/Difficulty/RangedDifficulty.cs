@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using WarKiwiCode.Game_Files.Scripts.Utilities;
 
 namespace WarKiwiCode.Game_Files.Scripts.Difficulty
 {
@@ -8,18 +9,19 @@ namespace WarKiwiCode.Game_Files.Scripts.Difficulty
     {
         public List<RangedDifficultyLevel> rangedDifficultyLevels;
     }
-    
-    public enum RangedEnemyType
+
+/*
+public enum RangedEnemyType
     {
-        PistolRanged = 0,
-        SmgRanged = 1,
-        RpgRanged = 2
-    }
+        PistolRanged,
+        SmgRanged ,
+        RpgRanged
+    }*/
     
     [System.Serializable]
     public struct RangedEnemySpawnData
     {
-        public RangedEnemyType enemyType;
+        public EnemyType.RangedEnemyType enemyType;
         public float spawnChance;
     }
     

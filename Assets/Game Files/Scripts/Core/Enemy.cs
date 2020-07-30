@@ -1,87 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
 using DG.Tweening;
 using MEC;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using WarKiwiCode.Game_Files.Scripts.Core.Attack;
 using WarKiwiCode.Game_Files.Scripts.Core.Movement;
 using WarKiwiCode.Game_Files.Scripts.Managers;
 using WarKiwiCode.Game_Files.Scripts.Projectiles;
-using Random = UnityEngine.Random;
-
 
 namespace WarKiwiCode.Game_Files.Scripts.Core
 {
-    public enum EnemyType
-    {
-        SlowMelee,
-        NormalMelee,
-        FastMelee,
-        PistolRanged,
-        SmgRanged,
-        RpgRanged
-    }
-    
     [RequireComponent(typeof(EnemyMovement))]
-    public abstract class Enemy : MonoBehaviour, IPooledObject, ISpawnable
+    public sealed class Enemy : MonoBehaviour, IPooledObject, ISpawnable
     {
-        [SerializeField] protected Light2D enemyLight;
-        [SerializeField] protected int maxHealth;
-        
-        
+        [SerializeField] private Light2D enemyLight;
+        [SerializeField] private int maxHealth;
         [SerializeField] private SpriteRenderer healthBarSprite;
         [SerializeField] private SpriteRenderer healthBackgroundSprite;
         [Tooltip("The Bar container")]
         [SerializeField] private Transform healthBar;
 
-
-        
-
         private int _currentHealth;
-        protected Rigidbody2D rb;
-        
-        
-        
         private SpriteRenderer _sprite;
         private Collider2D _collider;
         private EnemyMovement _enemyMovement;
+        private IAttack _enemyAttack;
+        // TODO: Check if we need the ISpawnable interface that sets the spawn area name
+        private SpawnAreaName _spawnArea;
+        //private SpawnManager _spawnManager;
+        private Vector3 _playerPosition;
+        private string _enemySpawnName;
+        private float _originalLightIntensity;
 
-        protected SpawnAreaName spawnArea;
-        protected SpawnManager _spawnManager;
-        protected Vector3 playerPosition;
-        
-
-        protected void Start()
+        private void Awake()
         {
-            /*
-            _collider = GetComponent<Collider2D>();
-            _sprite = GetComponent<SpriteRenderer>();
-            currentHealth = maxHealth;
-            HideHealthBar();
-            GetSpawnArea(GetPosition());
-            FindNearestPlayer();
-            SetMovementType();
-            */
+            _originalLightIntensity = enemyLight.intensity;
         }
 
-        public virtual void OnSpawn()
+        public void OnSpawn()
         {
             _collider = GetComponent<Collider2D>();
             _sprite = GetComponent<SpriteRenderer>();
             _enemyMovement = GetComponent<EnemyMovement>();
-            
-            _spawnManager = SpawnManager.instance;
+            _enemyAttack = GetComponent<IAttack>();
+            //_spawnManager = SpawnManager.instance;
             _sprite.DOFade(1, 0.01f);
             _collider.enabled = true;
-            enemyLight.intensity = 1;
+            enemyLight.intensity = _originalLightIntensity;
             _currentHealth = maxHealth;
             HideHealthBar();
             _enemyMovement.InitializeMovement();
-            playerPosition = _enemyMovement.FindNearestPlayer();
+            if (CheckForAttackInterface())
+            {
+                _enemyAttack.InitializeAttack();
+            }
+            _playerPosition = _enemyMovement.FindNearestPlayer();
+            
         }
-        
-        protected abstract void AttackPlayer();
 
         private void TakeDamage(int damage)
         {
@@ -90,24 +66,21 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             {
                 ShowHealthBar();
             }
-
             float healthPercent = (float)_currentHealth / maxHealth;
-            
             UpdateHealthBar(healthPercent);
-            
-            Vector3 bloodDirection = (GetPosition() - playerPosition).normalized;
+            Vector3 bloodDirection = (GetPosition() - _playerPosition).normalized;
             BloodParticleSystemHandler.Instance.SpawnBlood(GetPosition(), bloodDirection);
             if (_currentHealth <= 0)
             {
                 _enemyMovement.DisableEnemyMovement(true);
                 _currentHealth = 0;
                 HideHealthBar();
-                //Die
+                // Die
                 Timing.RunCoroutine(EnemyDeath());
             }
         }
-    
-        protected void OnCollisionEnter2D(Collision2D other)
+
+        private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.GetComponent<BulletData>() != null)
             {
@@ -115,7 +88,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
                 
                 // Collided with a bullet
                 TakeDamage(damage);
-
                 Timing.RunCoroutine(DisableBullet(other.gameObject).CancelWith(gameObject));
             }
         }
@@ -126,23 +98,22 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             bullet.SetActive(false);
         }
 
-        protected Vector3 GetPosition()
-        {
-            return transform.position;
-        }
-
         private IEnumerator<float> EnemyDeath()
         {
             // TODO: Might wanna change the enemy death animation.
-            
             _collider.enabled = false;
             enemyLight.intensity = 0;
+            if (CheckForAttackInterface())
+            {
+                _enemyAttack.EndAttackWhenDead();
+            }
             _sprite.DOFade(0, 1f);
             yield return Timing.WaitForSeconds(1f);
             GameObject thisEnemy = gameObject;
             thisEnemy.SetActive(false);
-            // BUG: HAY QUE HACER OVERRIDE A ESTE DESPAWN!
-            ObjectPoolerManager.instance.Despawn("EnemySlowMelee", thisEnemy);
+            // TODO: Revisar que esto sirva
+            _enemyMovement.RemoveFinalPositionFromList();
+            ObjectPoolerManager.instance.Despawn(_enemySpawnName, thisEnemy);
         }
 
         private void HideHealthBar()
@@ -153,33 +124,31 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             healthBackgroundSprite.enabled = false;
         }
 
-        private bool HealthBarEnabled()
-        {
-            return healthBarSprite.enabled && healthBackgroundSprite.enabled;
-        }
-
         private void ShowHealthBar()
         {
             healthBarSprite.enabled = true;
             healthBackgroundSprite.enabled = true;
             
             Sequence showHealthBar = DOTween.Sequence();
-
             showHealthBar.Append(healthBarSprite.DOFade(1, 0.25f));
             showHealthBar.Join(healthBackgroundSprite.DOFade(1, 0.25f));
-
             showHealthBar.Play();
         }
-
-        private void UpdateHealthBar(float value)
-        {
-            healthBar.DOScaleX(value, 0.1f);
-        }
-
         
-        public void SetSpawnArea(SpawnAreaName areaName)
+        private Vector3 GetPosition() => transform.position;
+        
+        private bool HealthBarEnabled() => healthBarSprite.enabled && healthBackgroundSprite.enabled;
+
+        private void UpdateHealthBar(float value) => healthBar.DOScaleX(value, 0.1f);
+
+        public void SetSpawnArea(SpawnAreaName areaName) => _spawnArea = areaName;
+
+        public void SetEnemySpawnName(string spawnName) => _enemySpawnName = spawnName;
+        
+        // TEST
+        private bool CheckForAttackInterface()
         {
-            spawnArea = areaName;
+            return GetComponent<IAttack>() != null;
         }
     }
 }

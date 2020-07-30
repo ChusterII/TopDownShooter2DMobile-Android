@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7375398329610559755}
   - component: {fileID: 4487050576494657398}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 5378334661857903595}
   - component: {fileID: 4580537076365677679}
   - component: {fileID: 7235451333742344987}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Shotgun Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28238c9c62033f2438f891eee8fe36cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 50
+  bulletSpeed: 45
 --- !u!114 &7235451333742344987
 MonoBehaviour:
   m_ObjectHideFlags: 0
