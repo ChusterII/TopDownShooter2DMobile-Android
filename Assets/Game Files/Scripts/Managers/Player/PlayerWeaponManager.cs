@@ -26,8 +26,5 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
         }
     }
 
-    public class Pistol : Weapon
-    {
-        protected int maxAmmo = 32;
-    }
+    
 }

@@ -51,7 +51,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         {
             _spawnManager = SpawnManager.instance;
             GetSpawnDataFromDifficulty();
-            
         }
 
         // Update is called once per frame

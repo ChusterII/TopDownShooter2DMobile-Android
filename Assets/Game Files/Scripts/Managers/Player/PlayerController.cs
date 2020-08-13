@@ -12,7 +12,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
     [System.Serializable]
     public class MuzzleFlash
     {
-        public string tag;
+        public WeaponType weaponType;
         public GameObject flash;
         public float flashSpeed;
     }
@@ -29,20 +29,19 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
 
         public IntEvent updateMaxAmmo;
         public IntEvent updateCurrentAmmo;
+        public IntEvent updateClipCount;
         public UnityEvent resetReloadProgressBar;
         public BoolEvent disableInput;
         public BoolEvent displayReload;
         public SpawnShellEvent spawnShell;
         public FloatEvent onReload;
-        //public IntEvent onSwitchWeapon;
-        
+
         [SerializeField] private PlayerInputManager playerInput;
         [SerializeField] private Transform bulletSpawnPosition;
         [SerializeField] private float maxShootingAngle = 70f;
         [FormerlySerializedAs("_muzzleFlashes")] 
         [SerializeField] private List<MuzzleFlash> muzzleFlashes = new List<MuzzleFlash>();
         [SerializeField] private Weapon[] weapons;
-        
 
         private ObjectPoolerManager _objectPooler;
         private AudioSource _audioSource;
@@ -54,6 +53,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
         private float _reloadTimer = 0;
         private Dictionary<WeaponType, Weapon> _availableWeapons;
         private bool _isReloading;
+        private int _currentClipCount;
         
         private void Start()
         {
@@ -69,12 +69,13 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
             }
 
             _currentWeapon = _availableWeapons[WeaponType.Pistol]; // Make the Pistol the default weapon
-            UiManager.instance.SetWeaponButtonText(_currentWeapon.name);
             // Set Hold Allowed value
             playerInput.SetHold(_currentWeapon.allowsHold);
             _currentAmmo = _currentWeapon.maxAmmo;
+            _currentClipCount = _currentWeapon.startingClips;
             updateMaxAmmo.Invoke(_currentWeapon.maxAmmo);
             updateCurrentAmmo.Invoke(_currentWeapon.maxAmmo);
+            updateClipCount.Invoke(_currentWeapon.startingClips);
         }
 
         private void Update()
@@ -84,6 +85,25 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
             {
                 _reloadTimer += Time.deltaTime;
             }
+            // TESTING --------------------------
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                SwitchCurrentWeapon(WeaponType.Pistol);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                SwitchCurrentWeapon(WeaponType.Shotgun);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                SwitchCurrentWeapon(WeaponType.Smg);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                SwitchCurrentWeapon(WeaponType.AssaultRifle);
+            }
+            
+            // ----------------------------------
             
         }
 
@@ -109,7 +129,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
             {
                 // FIRE ZE MISSILES!!
                 Timing.RunCoroutine(ShowMuzzleFlash());
-
                 for (int i = 0; i < _currentWeapon.numberOfBullets; i++)
                 {
                     // Set the spread of the bullet in terms of rotation
@@ -128,14 +147,15 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                         case WeaponType.AssaultRifle:
                             _objectPooler.Spawn("Assault Rifle Bullet", spawnPosition, spreadRotation, SpawnAreaName.None);
                             break;
+                        case WeaponType.Smg:
+                            _objectPooler.Spawn("SMG Bullet", spawnPosition, spreadRotation, SpawnAreaName.None);
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    
                 }
                 
                 // Play firing sound
-                //_audioSource.PlayOneShot(_currentWeapon.firingSound);
                 _audioSource.clip = _currentWeapon.firingSound;
                 _audioSource.PlayOneShot(_audioSource.clip);
                 
@@ -151,12 +171,33 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                 // Reset the ROF timer
                 _weaponRofTimer = 0;
             }
+            // Check if the gun needs reloading
+            CheckIfNeedsReload();
+        }
+
+        private void CheckIfNeedsReload()
+        {
+            // Check if current ammo is 0
             if (_currentAmmo <= 0)
             {
-               // Out of ammo, time to reload
-               Timing.RunCoroutine(Reload());
+                // No more clips and it isn't the pistol, fall back to pistol
+                if (_currentWeapon.weaponType != WeaponType.Pistol && _currentClipCount <= 0)
+                {
+                    SwitchCurrentWeapon(WeaponType.Pistol);
+                    GameEvents.instance.PowerUpSpent(gameObject.tag);
+                    return;
+                }
+
+                if (_currentWeapon.weaponType != WeaponType.Pistol)
+                {
+                    // Got more clips, weapon's not the pistol, though.
+                    _currentClipCount--;
+                    updateClipCount.Invoke(_currentClipCount);
+                }
+
+                // Out of ammo, time to reload
+                Timing.RunCoroutine(Reload());
             }
-            
         }
 
         private IEnumerator<float> Reload()
@@ -194,14 +235,13 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
 
             // Disable the UI elements and enable input again
             displayReload.Invoke(false);
-            
             yield return Timing.WaitForSeconds(0.05f);
             disableInput.Invoke(false);
-            
         }
 
-        public void SwitchCurrentWeapon()
+        public void SwitchCurrentWeapon(WeaponType weapon)
         {
+            /*
             switch (_currentWeapon.name)
             {
                 case "Pistol":
@@ -213,24 +253,23 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                 case "Assault Rifle":
                     _currentWeapon = _availableWeapons[WeaponType.Pistol];
                     break;
-            }
+            }*/
+            _currentWeapon = _availableWeapons[weapon];
             updateMaxAmmo.Invoke(_currentWeapon.maxAmmo);
             _currentAmmo = _currentWeapon.maxAmmo; // Testing purposes
             updateCurrentAmmo.Invoke(_currentAmmo);
-            UiManager.instance.SetWeaponButtonText(_currentWeapon.name);
+            updateClipCount.Invoke(_currentWeapon.startingClips);
             // Set Hold Allowed value
             playerInput.SetHold(_currentWeapon.allowsHold);
         }
-        
-        
 
         private IEnumerator<float> ShowMuzzleFlash()
         {
-            MuzzleFlash muzzleFlash = muzzleFlashes.Find(flash => flash.tag.Equals(_currentWeapon.name));
+            //MuzzleFlash muzzleFlash = muzzleFlashes.Find(flash => flash.tag.Equals(_currentWeapon.name));
+            MuzzleFlash muzzleFlash = muzzleFlashes.Find(flash => flash.weaponType == _currentWeapon.weaponType);
             muzzleFlash.flash.SetActive(true);
             yield return Timing.WaitForSeconds(muzzleFlash.flashSpeed);
             muzzleFlash.flash.SetActive(false);
-            
         }
 
         private void ClampShootingAngle()
@@ -266,6 +305,5 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
                 }
             }
         }
-
     }
 }

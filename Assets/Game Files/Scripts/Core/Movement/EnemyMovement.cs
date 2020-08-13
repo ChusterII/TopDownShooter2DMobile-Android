@@ -42,6 +42,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
             canMove = true;
             DisableEnemyMovement(false);
             GetSpawnArea(GetPosition());
+            print(_spawnedTop);
             spawnManager = SpawnManager.instance;
             _enemyRangedAttackType = GetComponent<IRangedAttackType>(); // Ranged Attack Interface
             CalculateFinalPosition();
@@ -108,7 +109,17 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
 
         public Vector3 FindNearestPlayer()
         {
-            return _spawnedTop ? GameObject.FindWithTag("PlayerTop").transform.position : GameObject.FindWithTag("PlayerBottom").transform.position;
+            if (_spawnedTop)
+            {
+                print("Spawned Top: " + GameObject.FindWithTag("PlayerTop").tag);
+                return GameObject.FindWithTag("PlayerTop").transform.position;
+            }
+            else
+            {
+                print("Spawned Bottom: " + GameObject.FindWithTag("PlayerBottom").tag);
+                return GameObject.FindWithTag("PlayerBottom").transform.position;
+            }
+                
         }
 
         private Vector3 FindWeaponRangePosition(EnemyWeapon weapon)
@@ -120,15 +131,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
             return new Vector3(randomX, randomY);
         }
 
-        private void GetSpawnArea(Vector3 startingPosition)
-        {
-            _spawnedTop = startingPosition.y >= 0;
-        }
+        private void GetSpawnArea(Vector3 startingPosition) => _spawnedTop = startingPosition.y >= 0;
 
-        public void DisableEnemyMovement(bool value)
-        {
-            disableMovement = value;
-        }
+        public void DisableEnemyMovement(bool value) => disableMovement = value;
 
         public void RemoveFinalPositionFromList()
         {

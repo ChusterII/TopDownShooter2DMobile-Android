@@ -25,6 +25,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                 case "Assault Rifle":
                     uvIndex = 2;
                     break;
+                default:
+                    uvIndex = 0;
+                    break;
             }
             
             ShellParticleSystemHandler.Instance.SpawnShell(quadPosition, shellMoveDirection, uvIndex);

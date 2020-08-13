@@ -3,11 +3,7 @@
     public enum SpawnAreaName
     {
         Top,
-        TopLeft,
-        TopRight,
         Bottom,
-        BottomLeft,
-        BottomRight,
         None
     }
 }

@@ -56,7 +56,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
                 _enemyAttack.InitializeAttack();
             }
             _playerPosition = _enemyMovement.FindNearestPlayer();
-            
         }
 
         private void TakeDamage(int damage)
@@ -98,6 +97,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             bullet.SetActive(false);
         }
 
+        
         private IEnumerator<float> EnemyDeath()
         {
             // TODO: Might wanna change the enemy death animation.
@@ -113,6 +113,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core
             thisEnemy.SetActive(false);
             // TODO: Revisar que esto sirva
             _enemyMovement.RemoveFinalPositionFromList();
+            GameEvents.instance.EnemyDeath(new SpawnPositionAndArea(_spawnArea, GetPosition()));
             ObjectPoolerManager.instance.Despawn(_enemySpawnName, thisEnemy);
         }
 

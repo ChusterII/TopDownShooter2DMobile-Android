@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 5fd0de8702902c64e9c2962463813580, type: 3}
+    - {fileID: 102900000, guid: 267af99e2fdded04191b348fd347baea, type: 3}
+    - {fileID: 102900000, guid: 2e9bfca67e7531e4bbcb1eec03b30778, type: 3}
+    - {fileID: 102900000, guid: 1710a6c9f98ef1f46be72983ef1887db, type: 3}
+    totalSpriteSurfaceArea: 8403520
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 82628c721f4f2ba4cb884e7e457007d1, type: 3}
+  - {fileID: 21300000, guid: c4565e44be440a246872921430ecd3ce, type: 3}
+  - {fileID: 21300000, guid: 2fcd46358f5e99342b10c6268a37821a, type: 3}
+  - {fileID: 21300000, guid: f6ed34279641c2842b1464166e0b42ed, type: 3}
+  - {fileID: 21300000, guid: e85e5fe767463684f8d07f7919ccfe18, type: 3}
+  - {fileID: 21300000, guid: 043e980829a93f64b85555f532b4242e, type: 3}
+  - {fileID: 21300000, guid: 8ec66209846a6dd488ffa357dadfc10e, type: 3}
+  - {fileID: 21300000, guid: 02d0e59952ac92d408d1fb2e69da27dc, type: 3}
+  - {fileID: 21300000, guid: 2770c0f9552a97e4f868faa0eb9d7c2c, type: 3}
+  - {fileID: 21300000, guid: cdefd23a67846a740a2d8ddc30943af7, type: 3}
+  - {fileID: 21300000, guid: 7d31dc9b53e9b854d807967819e0afc6, type: 3}
+  - {fileID: 21300000, guid: 57140ffba3f3a8041864306c9809fca8, type: 3}
+  - {fileID: 21300000, guid: d0f16e1cdd10cfc4b8f3da64cf4b0dc0, type: 3}
+  - {fileID: 21300000, guid: 240fb9fc21d1adf4ba9fe92a1f2f61d3, type: 3}
+  - {fileID: 21300000, guid: 84bed26d447c3a048985b0049db10b87, type: 3}
+  - {fileID: 21300000, guid: bd47d25fd4219844fbea44d992f53897, type: 3}
+  - {fileID: 21300000, guid: 25ef4d8f45bed2f498d0f5b6c3abaf9f, type: 3}
+  - {fileID: 21300000, guid: a0439cefb88cc26488cabe6d5d91a37f, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - UIdetailMAGENTAwithGLOW2100X420MIRRORimage
+  - Magenta3HP1150x340
+  - UIdetailCYANwithGLOW2100X420MIRRORimage
+  - CyanPISTOL420x420
+  - Cyan2HP1150x340
+  - UIdetailMAGENTAwithGLOW2100X420
+  - MagentaPISTOL420x420
+  - Magenta5HP1150x340
+  - Cyan5HP1150x340
+  - Magenta1HP1150x340
+  - MagentaBORDER1150x340
+  - Cyan4HP1150x340
+  - Magenta4HP1150x340
+  - UIdetailCYANwithGLOW2100X420
+  - CyanBORDER1150x340
+  - Cyan3HP1150x340
+  - Magenta2HP1150x340
+  - Cyan1HP1150x340
+  m_Tag: UI Atlas
+  m_IsVariant: 0

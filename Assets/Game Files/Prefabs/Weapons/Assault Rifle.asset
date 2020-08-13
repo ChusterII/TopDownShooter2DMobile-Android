@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Assault Rifle
   m_EditorClassIdentifier: 
   name: Assault Rifle
-  weaponType: 2
+  weaponType: 3
   maxAmmo: 30
   startingClips: 1
   damage: 2

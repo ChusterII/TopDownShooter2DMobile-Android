@@ -14,7 +14,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Utilities
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            print("collided");
             if (other.gameObject.tag.Equals("Zinji"))
             {
                 displayZinji.Invoke(false);

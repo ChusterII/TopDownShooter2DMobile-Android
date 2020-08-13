@@ -83,8 +83,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Attack.Melee
         private void Attack()
         {
             // Make player call Take Damage
-            Vector3 closestPointToPlayer = _collider.ClosestPoint(playerPosition);
-            _objectPooler.Spawn("HitParticles", closestPointToPlayer, Quaternion.identity, SpawnAreaName.None);
+            _objectPooler.Spawn("HitParticles", playerPosition, Quaternion.identity, SpawnAreaName.None);
             _playerHealth.TakeDamage(weapon.meleeDamage);
         }
 
