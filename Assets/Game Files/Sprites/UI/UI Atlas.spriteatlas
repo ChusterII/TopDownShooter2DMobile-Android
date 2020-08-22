@@ -34,13 +34,14 @@ SpriteAtlas:
     - {fileID: 102900000, guid: 267af99e2fdded04191b348fd347baea, type: 3}
     - {fileID: 102900000, guid: 2e9bfca67e7531e4bbcb1eec03b30778, type: 3}
     - {fileID: 102900000, guid: 1710a6c9f98ef1f46be72983ef1887db, type: 3}
-    totalSpriteSurfaceArea: 8403520
+    totalSpriteSurfaceArea: 9068520
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 82628c721f4f2ba4cb884e7e457007d1, type: 3}
   - {fileID: 21300000, guid: c4565e44be440a246872921430ecd3ce, type: 3}
   - {fileID: 21300000, guid: 2fcd46358f5e99342b10c6268a37821a, type: 3}
+  - {fileID: 21300000, guid: 0ecac36688e02e047b1e0dce708902ce, type: 3}
   - {fileID: 21300000, guid: f6ed34279641c2842b1464166e0b42ed, type: 3}
   - {fileID: 21300000, guid: e85e5fe767463684f8d07f7919ccfe18, type: 3}
   - {fileID: 21300000, guid: 043e980829a93f64b85555f532b4242e, type: 3}
@@ -53,6 +54,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d0f16e1cdd10cfc4b8f3da64cf4b0dc0, type: 3}
   - {fileID: 21300000, guid: 240fb9fc21d1adf4ba9fe92a1f2f61d3, type: 3}
   - {fileID: 21300000, guid: 84bed26d447c3a048985b0049db10b87, type: 3}
+  - {fileID: 21300000, guid: 0ef6ad2f3b92acf46b8c667604747e42, type: 3}
   - {fileID: 21300000, guid: bd47d25fd4219844fbea44d992f53897, type: 3}
   - {fileID: 21300000, guid: 25ef4d8f45bed2f498d0f5b6c3abaf9f, type: 3}
   - {fileID: 21300000, guid: a0439cefb88cc26488cabe6d5d91a37f, type: 3}
@@ -60,6 +62,7 @@ SpriteAtlas:
   - UIdetailMAGENTAwithGLOW2100X420MIRRORimage
   - Magenta3HP1150x340
   - UIdetailCYANwithGLOW2100X420MIRRORimage
+  - UIdetailCYANwithGLOW1900x175
   - CyanPISTOL420x420
   - Cyan2HP1150x340
   - UIdetailMAGENTAwithGLOW2100X420
@@ -72,6 +75,7 @@ SpriteAtlas:
   - Magenta4HP1150x340
   - UIdetailCYANwithGLOW2100X420
   - CyanBORDER1150x340
+  - UIdetailMAGENTAwithGLOW1900x175
   - Cyan3HP1150x340
   - Magenta2HP1150x340
   - Cyan1HP1150x340

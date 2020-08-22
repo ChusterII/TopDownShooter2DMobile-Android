@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using MEC;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,10 +10,15 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
     public class PowerUpManager : MonoBehaviour
     {
 
-        [SerializeField] private List<PowerUp> topPowerUps;
-        [SerializeField] private List<PowerUp> bottomPowerUps;
+        // Needs to be in two separate lists
+        [SerializeField] private List<PowerUp> powerUps;
+        //[SerializeField] private List<PowerUp> bottomPowerUps;
+        
         [Tooltip("General power up spawn chance")]
         [SerializeField] private float powerUpSpawnChance;
+
+        [SerializeField] private RectTransform player1PowerUpPosition;
+        
 
         private bool _player1HasPowerUp;
         private bool _player2HasPowerUp;
@@ -28,7 +35,10 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         // Update is called once per frame
         void Update()
         {
-        
+            if (Input.GetMouseButtonDown(0))
+            {
+                SpawnPowerUp(new SpawnPositionAndArea(SpawnAreaName.Top, Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+            }
         }
 
         private void SpawnPowerUp(SpawnPositionAndArea deathAreaAndPosition)
@@ -44,21 +54,32 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                         if (!_player1HasPowerUp)
                         {
                             // Select a proper power up.
-                            _player1CurrentPowerUp = SelectPowerUp(topPowerUps);
+                            _player1CurrentPowerUp = SelectRandomPowerUp(powerUps);
                             
                             // Set PowerUp flag
                             _player1HasPowerUp = true;
                             
                             // Spawn a PowerUp
-                            ObjectPoolerManager.instance.Spawn(_player1CurrentPowerUp.powerUpName,
+                            GameObject powerUp = ObjectPoolerManager.instance.Spawn(_player1CurrentPowerUp.powerUpName,
                                 deathAreaAndPosition.spawnPosition, Quaternion.identity, SpawnAreaName.Top);
+                            Timing.RunCoroutine(MoveToCanvas(powerUp));
+                        }
+                        else
+                        {
+                            check = Random.value;
+                            if (check <= _player1CurrentPowerUp.spawnChance)
+                            {
+                                GameObject powerUp = ObjectPoolerManager.instance.Spawn(_player1CurrentPowerUp.powerUpName,
+                                    deathAreaAndPosition.spawnPosition, Quaternion.identity, SpawnAreaName.Top);
+                                Timing.RunCoroutine(MoveToCanvas(powerUp));
+                            }
                         }
                         break;
                     case SpawnAreaName.Bottom:
                         if (!_player2HasPowerUp)
                         {
                             // Select a proper power up.
-                            _player2CurrentPowerUp = SelectPowerUp(bottomPowerUps);
+                            _player2CurrentPowerUp = SelectRandomPowerUp(powerUps);
                             
                             // Set PowerUp flag
                             _player2HasPowerUp = true;
@@ -70,6 +91,13 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
                         break;
                 }
             }
+        }
+
+        private IEnumerator<float> MoveToCanvas(GameObject powerUp)
+        {
+            powerUp.transform.SetParent(player1PowerUpPosition);
+            yield return Timing.WaitForOneFrame;
+            powerUp.transform.DOLocalMove(Vector3.zero, 1).SetEase(Ease.OutCubic);
         }
 
         private void RemovePowerUp(string playerTag)
@@ -86,7 +114,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
             }
         }
 
-        private PowerUp SelectPowerUp(List<PowerUp> powerUpList)
+        private PowerUp SelectRandomPowerUp(List<PowerUp> powerUpList)
         {
             // TODO: Add power up gradually as player completes chapters
             // TESTING: Random right now!

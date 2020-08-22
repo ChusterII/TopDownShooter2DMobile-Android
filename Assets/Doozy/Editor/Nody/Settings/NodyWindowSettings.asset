@@ -44,8 +44,7 @@ MonoBehaviour:
   DeletedNodes:
   - {fileID: -3709689212778067132, guid: b3671024225a27744bfb0100dc09e261, type: 2}
   - {fileID: 8443545595039623228, guid: b3671024225a27744bfb0100dc09e261, type: 2}
-  SelectedNodes:
-  - {fileID: -1934694004832239073, guid: b3671024225a27744bfb0100dc09e261, type: 2}
+  SelectedNodes: []
   GraphTabs:
   - IsRootTab: 1
     Graph: {fileID: 11400000, guid: b3671024225a27744bfb0100dc09e261, type: 2}

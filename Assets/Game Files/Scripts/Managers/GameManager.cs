@@ -23,6 +23,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 
         [Header("Testing")] 
         [SerializeField] private int difficultyLevel = 0;
+        [SerializeField] private bool spawnAllowed;
         
 
         private SpawnManager _spawnManager;
@@ -75,7 +76,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 
         private IEnumerator<float> GameLoop()
         {
-            while (_canSpawn)
+            while (_canSpawn && spawnAllowed)
             {
                 // Need to wait a bit before spawning because the SpawnManager hasn't loaded
                 yield return Timing.WaitForSeconds(3f);

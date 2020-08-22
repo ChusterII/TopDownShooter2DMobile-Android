@@ -35,20 +35,22 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Player
             {
                 _currentPlayerHealth = maxPlayerHealth;
             }
+            UiManager.instance.HealHealthBar(heal, gameObject.tag);
         }
         
         public void TakeDamage(int damage)
         {
             // Take damage
             CameraShake.ShakeAll();
-            print(gameObject.name + " took damage.");
             _currentPlayerHealth -= damage;
+            print(gameObject.tag + " took damage. Current HP: " + _currentPlayerHealth);
             if (_currentPlayerHealth <= 0)
             {
                 _currentPlayerHealth = 0;
                 // Player death
-                print(gameObject.name + " died.");
+                print(gameObject.tag + " died.");
             }
+            UiManager.instance.DamageHealthBar(damage, gameObject.tag);
         }
 
         private void OnCollisionEnter2D(Collision2D other)

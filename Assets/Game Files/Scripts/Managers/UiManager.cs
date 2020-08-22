@@ -35,7 +35,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         
         [Header("Health bars")]
         [SerializeField] private SpriteRenderer[] player1HealthPips;
-        [SerializeField] private GameObject[] player2HealthPips;
+        [SerializeField] private SpriteRenderer[] player2HealthPips;
         [SerializeField] private Color player1Damaged;
         [SerializeField] private Color player2Damaged;
         
@@ -57,6 +57,9 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         private float _backgroundLightOriginalIntensity;
         private int _player1CurrentHealthIndex;
         private int _player2CurrentHealthIndex;
+        private CoroutineHandle _currentDamageSequence;
+        private CoroutineHandle _currentHealSequence;
+        private Sequence _sequence;
 
         public static UiManager instance;
         private void Awake()
@@ -69,6 +72,8 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         {
             _gridOriginalPosition = tacticalModeGrid.transform.position;
             _backgroundLightOriginalIntensity = backgroundLight.intensity;
+            
+                                                           
             DisplayZinjiSprite(true);
             DisplayBlakeSprite(true);
             ResetPlayersHealthIndex();
@@ -76,10 +81,14 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.K))
+            /*if (Input.GetKeyDown(KeyCode.K))
             {
                 DamageHealthBar(1, "PlayerTop");
             }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                HealHealthBar(1, "PlayerTop");
+            }*/
         }
 
         public void DisplayBlakeSprite(bool value)
@@ -95,8 +104,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         }
 
         public void StartTacticalMode(GameObject grid) => Timing.RunCoroutine(TacticalModeGridMovement(grid));
-        
-        //public void StartTacticalModeTop(GameObject go) => Timing.RunCoroutine(TacticalModeGridMovement());
 
         private IEnumerator<float> TacticalModeGridMovement(GameObject grid)
         {
@@ -168,20 +175,77 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
         public void ResetPlayer2ReloadProgressBar() => player2ReloadingProgressBar.value = 0;
 
         #endregion
+        
+        public void HealHealthBar(int healAmount, string playerTag)
+        {
+            switch (playerTag)
+            {
+                case "PlayerTop":
+                    PlayHealAnimation(healAmount, ref _player1CurrentHealthIndex, player1HealthPips);
+                    break;
+                case "PlayerBottom":
+                    PlayHealAnimation(healAmount, ref _player2CurrentHealthIndex, player2HealthPips);
+                    break;
+            }
+        }
 
         public void DamageHealthBar(int damage, string playerTag)
         {
             switch (playerTag)
             {
                 case "PlayerTop":
-                    for (int i = _player1CurrentHealthIndex; i < damage; i++)
-                    {
-                        Timing.RunCoroutine(TurnOffHealthPip(player1HealthPips[i], player1Damaged));
-                    }
+                    PlayDamageAnimation(damage, ref _player1CurrentHealthIndex, player1HealthPips, player1Damaged);
                     break;
                 case "PlayerBottom":
+                    PlayDamageAnimation(damage, ref _player2CurrentHealthIndex, player2HealthPips, player2Damaged);
                     break;
             }
+        }
+
+        private void PlayHealAnimation(int healAmount, ref int currentHealthIndex, SpriteRenderer[] sprites)
+        {
+           
+            int targetPipIndex = currentHealthIndex - healAmount;
+            for (int i = currentHealthIndex - 1; i >= targetPipIndex; i--)
+            {
+                if (i >= 0)
+                {
+                    print("i=" + i);
+                    _currentHealSequence = Timing.RunCoroutine(TurnOnHealthPip(sprites[i]));
+                }
+            }
+            
+            currentHealthIndex -= healAmount;
+
+            // Check if the counter is overflowed.
+            if (currentHealthIndex < 0)
+            {
+                currentHealthIndex = 0;
+            }
+
+        }
+
+        private void PlayDamageAnimation(int damage, ref int currentHealthIndex, SpriteRenderer[] sprites, Color damageColor)
+        {
+            
+            int targetPipIndex = currentHealthIndex + damage;
+            for (int i = currentHealthIndex; i < targetPipIndex; i++)
+            {
+                if (i < sprites.Length)
+                {
+                    _currentDamageSequence = Timing.RunCoroutine(TurnOffHealthPip(sprites[i], damageColor));
+                }
+            }
+
+            // Move the current health pip counter
+            currentHealthIndex += damage;
+
+            // Check if the counter is overflowed.
+            if (currentHealthIndex > sprites.Length)
+            {
+                currentHealthIndex = sprites.Length;
+            }
+
         }
 
         private void ResetPlayersHealthIndex()
@@ -192,20 +256,27 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers
 
         private IEnumerator<float> TurnOffHealthPip(SpriteRenderer healthPip, Color targetColor)
         {
-            float flickerDuration = 0.1f;
-            Sequence healthBarDrainSequence = DOTween.Sequence();
-
-            healthBarDrainSequence.Append(healthPip.DOColor(targetColor, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOColor(Color.white, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOColor(targetColor, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOColor(Color.white, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOColor(targetColor, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOColor(Color.white, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOColor(targetColor, 0.1f));
-            healthBarDrainSequence.Append(healthPip.DOFade(0, 0.1f));
-
-            healthBarDrainSequence.Play();
+            _sequence = DOTween.Sequence();
             
+            _sequence.Append(healthPip.DOColor(targetColor, 0.1f));
+            _sequence.Append(healthPip.DOColor(Color.white, 0.1f));
+            _sequence.Append(healthPip.DOColor(targetColor, 0.1f));
+            _sequence.Append(healthPip.DOColor(Color.white, 0.1f));
+            _sequence.Append(healthPip.DOColor(targetColor, 0.1f));
+            _sequence.Append(healthPip.DOColor(Color.white, 0.1f));
+            _sequence.Append(healthPip.DOColor(targetColor, 0.1f));
+            _sequence.Append(healthPip.DOFade(0, 0.1f));
+
+            _sequence.Play();
+
+            yield return 0;
+        }
+        
+        private IEnumerator<float> TurnOnHealthPip(SpriteRenderer healthPip)
+        {
+            _sequence?.Complete();
+            healthPip.DOColor(Color.white, 0.5f);
+
             yield return 0;
         }
     }

@@ -8,7 +8,7 @@ namespace WarKiwiCode.Game_Files.Scripts.Managers.Power_Ups
         public Weapon weapon;
         public override void Use()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

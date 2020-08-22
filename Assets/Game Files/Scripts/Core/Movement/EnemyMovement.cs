@@ -42,7 +42,6 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
             canMove = true;
             DisableEnemyMovement(false);
             GetSpawnArea(GetPosition());
-            print(_spawnedTop);
             spawnManager = SpawnManager.instance;
             _enemyRangedAttackType = GetComponent<IRangedAttackType>(); // Ranged Attack Interface
             CalculateFinalPosition();
@@ -111,12 +110,12 @@ namespace WarKiwiCode.Game_Files.Scripts.Core.Movement
         {
             if (_spawnedTop)
             {
-                print("Spawned Top: " + GameObject.FindWithTag("PlayerTop").tag);
+                //print("Spawned Top: " + GameObject.FindWithTag("PlayerTop").tag);
                 return GameObject.FindWithTag("PlayerTop").transform.position;
             }
             else
             {
-                print("Spawned Bottom: " + GameObject.FindWithTag("PlayerBottom").tag);
+                //print("Spawned Bottom: " + GameObject.FindWithTag("PlayerBottom").tag);
                 return GameObject.FindWithTag("PlayerBottom").transform.position;
             }
                 
